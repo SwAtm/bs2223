@@ -42,6 +42,7 @@ public function purch_add_details(){
 		unset($_POST['item']);
 		$_POST['cash_disc']=$_POST['cash_disc']==''?0:$_POST['cash_disc'];
 		$_POST['discount']=$_POST['discount']==''?0:$_POST['discount'];
+		$_POST['hsn']=substr($_POST['hsn'],0,4);
 		//first entry
 		if (!isset($this->session->purchase_details)||empty($this->session->purchase_details)):
 		$det[] = $_POST;
@@ -427,6 +428,7 @@ public function purch_add_details(){
 				unset($_POST['item']);
 				$_POST['cash_disc']=$_POST['cash_disc']==''?0:$_POST['cash_disc'];
 				$_POST['discount']=$_POST['discount']==''?0:$_POST['discount'];
+				$_POST['hsn']=substr($_POST['hsn'],0,4);
 				//first entery
 				if(!isset($this->session->toadd) or empty($this->session->toadd)):
 					$toadd[] = $_POST;

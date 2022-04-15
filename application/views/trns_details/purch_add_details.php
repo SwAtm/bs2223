@@ -1,3 +1,12 @@
+<!--<script src="<?php echo base_url('application/third_party/jquery.js')?>"></script>
+<script link href="<?php echo base_url('application/third_party/select2.min.css')?>" rel = "stylesheet"></script>
+<script src="<?php echo base_url('application/third_party/select2.min.js')?>"></script>
+<script>
+$(document).ready(function() {
+$('.ddpdn').select2();
+});
+</script>
+-->
 <script>
 	window.onload = function(){
 	var title = document.querySelector('#title');
@@ -18,6 +27,7 @@
 		title.addEventListener('change',fillvalues);
 	}
 </script>
+
 <style>
 #tb {
 table-layout: fixed;
@@ -31,7 +41,7 @@ border: 1px solid black;
 
 
 <table id = "tb">
-<tr><th>Title</th><th style="width: 11%">Rate</th><th style="width: 11%">Quantity</th><th style="width: 11%">Discount</th><th style="width: 11%">Cash Disc</th><th style="width: 11%">HSN</th><th style="width: 11%">GST Rate</th><th style="width: 5%"></th></tr><tr>
+<tr><th>Title</th><th style="width: 10%">Rate</th><th style="width: 10%">Quantity</th><th style="width: 11%">Discount</th><th style="width: 11%">Cash Disc</th><th style="width: 7%">HSN</th><th style="width: 11%">GST Rate</th><th style="width: 5%"></th></tr><tr>
 
 <?php
 
@@ -40,7 +50,7 @@ if (isset($calling_proc) and 'edit' == $calling_proc):
 else:
 	echo "<form method = POST action = ".site_url('trns_details/purch_add_details').">";
 endif;
-echo "<td><Select name = item required id = title>";
+echo "<td><Select name = item required id = title class = ddpdn>";
 echo "<option value=''>Title</option>";
 foreach ($item as $key => $value) {
 	$optvalue = json_encode(array('item_id'=>$value['id'], 'gst_rate'=>$value['gstrate'], 'rcm'=>$value['rcm'], 'gcat_id'=>$value['gcat_id']));
@@ -53,8 +63,8 @@ echo "</select>";
 <td><input type = number size = 15 name = quantity value = 1></td>
 <td><input type = number size = 15 name = discount step = 0.01 placeholder = 0.00></td>
 <td><input type = number size = 15 name = cash_disc step = 0.01 placeholder = 0.00></td>
-<td><input type = number size = 15 maxlength = "14" name = hsn required></td>
-<td><input type = number size = 15 name = gst_rate id = gstrate required readonly></td>
+<td><input type = text size = 4 maxlenght = "4" name = hsn required oninput="this.value=this.value.replace(/[^0-9]/g,'');"></td>
+<td><input type = number size = 15 name = gst_rate id = gstrate required></td>
 <td><input type = submit name = add value = Add></td></tr>
 <tr><td colspan = 4 align = center><input type = submit name =  complete id = complete formnovalidate="formnovalidate" value = 'Bill Over'></td>
 <td colspan = 4 align = center><input type = submit name =  cancel id = cancel formnovalidate="formnovalidate" value = 'Cancel Bill'></td>

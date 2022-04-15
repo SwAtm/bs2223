@@ -46,7 +46,7 @@ $pdf->Cell(15,5,'Cash_D',1,0,'C');
 //$pdf->Cell(15,5,'Tax',1,0,'C');
 $pdf->Cell(25,5,'Total',1,1,'C');
 foreach ($details as $d):
-$pdf->Cell(55,5,$d['title'],1,0,'C');
+$pdf->Cell(55,5,substr($d['title'],0,25),1,0,'C');
 $pdf->Cell(25,5,$d['code'],1,0,'C');
 //$pdf->Cell(25,5,$d['rate'],1,0,'C');
 $pdf->Cell(20,5,$d['hsn'],1,0,'C');
