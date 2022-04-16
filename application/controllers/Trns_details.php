@@ -36,6 +36,12 @@ public function purch_add_details(){
 	elseif (isset($_POST['add'])):
 		//for adding
 		unset($_POST['add']);
+		//if a non json entity is submitted:
+		if (!is_object(json_decode($_POST['item']))):
+			unset ($_POST);
+			redirect(site_url('Trns_details/purch_add_details'));
+		endif;
+		
 		$_POST['item_id']=json_decode($_POST['item'])->item_id;
 		$_POST['rcm']=json_decode($_POST['item'])->rcm;
 		$_POST['gcat_id']=json_decode($_POST['item'])->gcat_id;
@@ -199,6 +205,13 @@ public function purch_add_details(){
 			redirect (site_url('Welcome/home'));
 		
 		elseif(isset($_POST['add'])):
+		//if a non json entity is submitted:
+		if (!is_object(json_decode($_POST['item']))):
+			unset ($_POST);
+			redirect(site_url('Trns_details/sales_add_details'));
+		endif;
+		
+		
 		//submitted to add
 			$item = json_decode($_POST['item']);
 		//currently submitted data
@@ -422,6 +435,11 @@ public function purch_add_details(){
 			//to add
 			elseif(isset($_POST['add'])):
 				unset($_POST['add']);
+				//if a non json entity is submitted:
+					if (!is_object(json_decode($_POST['item']))):
+					unset ($_POST);
+				redirect(site_url('Trns_details/edit_purchase_add'));
+				endif;
 				$_POST['item_id']=json_decode($_POST['item'])->item_id;
 				$_POST['rcm']=json_decode($_POST['item'])->rcm;
 				$_POST['gcat_id']=json_decode($_POST['item'])->gcat_id;
@@ -565,6 +583,12 @@ public function purch_add_details(){
 	
 			//to add
 			elseif(isset($_POST['add'])):
+				//if a non json entity is submitted:
+				if (!is_object(json_decode($_POST['item']))):
+					unset ($_POST);
+					redirect(site_url('Trns_details/edit_sales_add'));
+				endif;
+				
 				//unset($_POST['add']);
 				$item = json_decode($_POST['item']);
 				$_POST['discount'] = $_POST['discount']==''?0:$_POST['discount'];
@@ -610,8 +634,8 @@ public function purch_add_details(){
 				if (isset($toadd) and !empty($toadd)):
 
 				foreach ($toadd as $key) {
-					print_r($key);
-					print_r($toadd);
+					//print_r($key);
+					//print_r($toadd);
 					//adding to inventory
 					$this->Inventory_model->update_transaction($tran_type_name, $key['inventory_id'], $key['quantity']);
 					//adding to trns_details
@@ -646,8 +670,22 @@ public function purch_add_details(){
 			endif;
 
 		}
-
-
+		public function send_data($searchval=null){
+		//$searchval = file_get_contents('php://input');
+		//$data=json_decode($searchval, true);
+		//$data1 = $data['url']->uri->segment(3);
+		//$data1=$_GET['
+		//echo $data;
+		//echo json_encode($data);
+		//$data1=$_GET['searchval'];
+		//$data1=$this->uri->segment(7);
+		//echo json_encode($data1);
+		$data1 = $this->input->post('searchval');
+		//$data1 = $data['searchval'];
+		echo json_encode($data1);
+		//print_r($searchval);
+		
+		}		
 
 }
 ?>

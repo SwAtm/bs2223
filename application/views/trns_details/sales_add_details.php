@@ -9,7 +9,8 @@
 	let btnhandle = document.querySelector('#complete');
 	function fillvalues(){
 		cbhandle.innerHTML = '';
-		let	details = title.options[title.selectedIndex].value;
+		//let	details = title.options[title.selectedIndex].value;
+		let	details = title.value;
 		if ('' === details){
 			btnhandle.disabled = false;
 		} else {
@@ -17,7 +18,7 @@
 			ratehandle.value = details1.rate;
 			hsnhandle.value = details1.hsn;
 			gstratehandle.value = details1.grate;
-			cbhandle.innerHTML ='Closig Balance: '+ details1.clbal + ' HSN: ' + details1.hsn + ' GST Rate: ' + details1.gstrate + '%';
+			cbhandle.innerHTML =details1.title+'-'+details1.rate+' '+'Closig Balance: '+ details1.clbal + ' HSN: ' + details1.hsn + ' GST Rate: ' + details1.gstrate + '%';
 			console.log(details1);
 		
 			btnhandle.disabled = true;
@@ -55,13 +56,24 @@ if (isset($calling_proc) and 'edit' == $calling_proc):
 else:
 	echo "<form method = POST action = ".site_url("trns_details/sales_add_details/").">";
 endif;
+?>
+<tr><td><input list = "xyz" name = "item" id = "title" size =
+45 autocomplete="off">
+<datalist id = "xyz">
+<?php
+foreach ($items as $key) {
+	echo "<option value = '$key[value]'>$key[title]</option>";
+}
+echo "</td>";
+/*
 echo "<td><Select name = item required id = title>";
 echo "<option value=''>Title</option>";
 foreach ($items as $key) {
 	echo "<option value = '$key[value]'>$key[title]</option>";
 }
 echo "</select>";
-echo "</td>";
+
+*/
 ?>
 <td><input type = number size = 15 name = quantity value = 1 min="1"></td>
 <td><input type = number size = 15 name = discount step = 0.01 placeholder = 0.00></td>
