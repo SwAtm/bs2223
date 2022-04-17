@@ -32,6 +32,9 @@
 		echo "<option value = '' >Select Party</option>";
 		foreach ($party as $p):
 			echo "<option value = $p[id]>$p[name] -- $p[city]</option>";
+			if ($p[id]==122):
+			echo "<option value = $p[id] selected>$p[name] -- $p[city]</option>";
+			endif;
 		endforeach;
 		echo "</select>";
 		echo "</td><td><select name = series id = series required>";
