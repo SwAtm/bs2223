@@ -48,7 +48,7 @@ class Trnf_details extends CI_Controller{
 				//submitted to add
 				$item = json_decode($_POST['item']);
 				//currently submitted data
-				$details = array('inventory_id' => $item->id, 'quantity' => $_POST['quantity'],'item_id' => $item->item_id, 'rate' => $item->rate);
+				$details = array('inventory_id' => $item->id, 'quantity' => $_POST['quantity'],'item_id' => $item->item_id, 'myprice' => $item->myprice, 'rate' => $item->rate);
 				// firts transaction - session is empty
 				if (!isset($this->session->send_details)||empty($this->session->send_details)):
 					$det[] = $details;

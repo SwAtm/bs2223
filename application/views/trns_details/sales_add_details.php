@@ -4,7 +4,7 @@
 	title.focus();
 	let ratehandle = document.querySelector('#rate');
 	let hsnhandle = document.querySelector('#hsn');
-	let gstratehandle = document.querySelector('#gstrate');
+	//let gstratehandle = document.querySelector('#gstrate');
 	let cbhandle = document.querySelector("#cb");
 	let btnhandle = document.querySelector('#complete');
 	function fillvalues(){
@@ -17,7 +17,7 @@
 			details1 = JSON.parse(details);
 			ratehandle.value = details1.rate;
 			hsnhandle.value = details1.hsn;
-			gstratehandle.value = details1.grate;
+			//gstratehandle.value = details1.grate;
 			cbhandle.innerHTML =details1.title+'-'+details1.rate+' '+'Closig Balance: '+ details1.clbal + ' HSN: ' + details1.hsn + ' GST Rate: ' + details1.gstrate + '%';
 			console.log(details1);
 		
@@ -79,7 +79,7 @@ echo "</select>";
 <td><input type = number size = 15 name = discount step = 0.01 placeholder = 0.00></td>
 <td><input type = number size = 15 name = cash_disc step = 0.01 placeholder = 0.00></td>
 <input type = hidden id = hsn>
-<input type = hidden id = gstrate>
+<!--<input type = hidden id = gstrate>-->
 <input type = hidden id = rate>
 <td><input type = submit name = add value = Add></td></tr>
 <tr><td id = cb></td>
