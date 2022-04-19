@@ -2,9 +2,16 @@
 <html>
 <head>
 
-<script src="<?php echo base_url('application/third_party/jquery.jss')?>" type="text/javascript"></script>
+
+<script src="<?php echo base_url('application/third_party/jquery.js')?>" type="text/javascript"></script>
 <link href="<?php echo base_url('application/third_party/menu-verticle.css')?>" rel="stylesheet" type="text/css" />
 <script src="<?php echo base_url('application/third_party/menu-verticle.js')?>" type="text/javascript"></script>
+
+<!--
+<script src="<?php echo base_url(IMGPATH.'jquery.js')?>" type="text/javascript"></script>
+<link href="<?php echo base_url(IMGPATH.'menu-verticle.css')?>" rel="stylesheet" type="text/css" />
+<script src="<?php echo base_url(IMGPATH.'menu-verticle.js')?>" type="text/javascript"></script>
+-->
 </head>
 <body>
 

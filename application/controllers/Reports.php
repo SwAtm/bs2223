@@ -65,7 +65,7 @@
 		//generate QR Code for UPI Sales
 		if ($data['summary']['payment_mode_name'] == "UPI" and $data['summary']['tran_type_name'] == "Sales"):
 		$text = "upi://pay?pa=".   			 // payment method.
-                "8197374808@paytm".          // VPA number.
+                "gpay-11192753290@okbizaxis".          // VPA number.
                 "&am=".number_format($data['totamount'],2,".",",").       // this param is for fixed amount (non editable).
                 "&pn=Yellappa%20Sunadolli".      // to showing your name in app.
                 "&cu=INR".                  // Currency code.

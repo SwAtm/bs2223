@@ -4,11 +4,11 @@ tfpdf();
 //$ntw = new \NTWIndia\NTWIndia();
 if (count($details)>14):
 $pdf = new tFPDF('P', 'mm', array(210,296));
-$y = 270;
+$y = 271;
 //$noofpages = ceil(count($details)/28);
 else:
 $pdf = new tFPDF('L', 'mm', array(210,148));
-$y = 130;
+$y = 123;
 endif;
 $i=1;
 $pdf->setLeftMargin(10);
@@ -20,12 +20,14 @@ $pdf->setXY(0,10);
 $pdf->Cell(190,5,'Ramakrishna Mission Ashrama - '.$location,0,1,'C');
 $pdf->SetFont('Arial','',14);
 $pdf->Cell(190,5,'Fort, Belgaum, Karnataka - 590016',0,1,'C');
+$pdf->SetFont('Arial','',12);
 $pdf->Cell(190,5,'Ph: 0831 2432789 / 2970320 / 321 :: email: belgaum@rkmm.org',0,1,'C');
 $pdf->ln(2);
 $pdf->cell(190,0,'',1,1);
 $pdf->ln(5);
-$pdf->SetFont('Arial','B',14);
+$pdf->SetFont('Arial','B',12);
 $pdf->cell(95,5,$summary['payment_mode_name'].' - '.$summary['tran_type_name']. ' - '.$summary['no'],0,0,'L');
+$pdf->SetFont('Arial','',12);
 $pdf->cell(95,5,'Date: '.date('d-m-Y',strtotime($summary['date'])),0,1,'R');
 $pdf->ln(3);
 $pdf->SetFont('Arial','',10);
@@ -46,7 +48,7 @@ $pdf->Cell(15,5,'Cash_D',1,0,'C');
 //$pdf->Cell(15,5,'Tax',1,0,'C');
 $pdf->Cell(25,5,'Total',1,1,'C');
 foreach ($details as $d):
-$pdf->Cell(55,5,substr($d['title'],0,25),1,0,'C');
+$pdf->Cell(55,5,substr($d['title'],0,25),1,0,'L');
 $pdf->Cell(25,5,$d['code'],1,0,'C');
 //$pdf->Cell(25,5,$d['rate'],1,0,'C');
 $pdf->Cell(20,5,$d['hsn'],1,0,'C');

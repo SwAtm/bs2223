@@ -9,7 +9,7 @@ class Trns_summary extends CI_Controller{
 		$this->load->library('form_validation');
 		$this->load->library('table');
 		$this->load->library('grocery_CRUD');
-		$this->output->enable_profiler(TRUE);
+		//$this->output->enable_profiler(TRUE);
 		$this->load->library('user_agent');
 		$this->load->library('session');
 		$this->load->model('Series_model');
@@ -29,7 +29,6 @@ class Trns_summary extends CI_Controller{
 			
 			$crud->set_table('trns_summary')
 				->set_subject('Transaction')
-				->order_by('id','desc')
 				->columns('series_id','no','date', 'party_id', 'expenses', 'amount','party_gstno', 'party_status','remark')
 				->display_as('series_id','Series')
 				->display_as('no','Trn Number')
@@ -38,6 +37,7 @@ class Trns_summary extends CI_Controller{
 				->display_as('expenses','Expenses')
 				->display_as('remark','Remark')
 				->display_as('amount', 'Amount')
+				->order_by('id','desc')
 				->unset_add()
 				->unset_delete()
 				->unset_edit()
