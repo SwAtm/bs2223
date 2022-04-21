@@ -2,13 +2,13 @@
 tfpdf();
 //$amt = preg_replace("/(\d+?)(?=(\d\d)+(\d)(?!\d))(\.\d+)?/i", "$1,", $det['amount']);
 //$ntw = new \NTWIndia\NTWIndia();
-if (count($details)>14):
+if (count($details)>12):
 $pdf = new tFPDF('P', 'mm', array(210,296));
-$y = 271;
+$y = 266;
 //$noofpages = ceil(count($details)/28);
 else:
 $pdf = new tFPDF('L', 'mm', array(210,148));
-$y = 123;
+$y = 118;
 endif;
 $i=1;
 $pdf->setLeftMargin(10);
@@ -95,6 +95,12 @@ $pdf->Cell(25,5,'Total',1,1,'C');
 endif;
 
 endforeach;
+$pdf->Cell(120,5,'Total Quantity',1,0,'C');
+$pdf->Cell(15,5,$totquantity,1,0,'C');
+$pdf->Cell(30,5,'Total + expenses',1,0,'C');
+$pdf->Cell(25,5,number_format($totamount,2,".",","),1,1,'R');
+
+
 /*
 if ($cgst+$igst>0):
 	if ($cgst>0):
@@ -108,6 +114,7 @@ endif;
 */
 
 $pdf->SetY($y);
+$pdf->Cell(190,5,'Remark: '.$summary['remark'],0,1,'L');
 $str = "Taxable Amount: ".number_format($taxamt,2,".",",")."  CGST = SGST = ".number_format($cgst,2,".",",")."  IGST = ".number_format($igst,2,".",",")." No-Tax Amount = ".number_format($notaxamt,2,".",",")." Expenses: ".number_format($summary['expenses'],2,".",",")." Total Payable: ".number_format($totamount,2,".",",");
 $pdf->MultiCell(150,5,$str,0,'L');
 

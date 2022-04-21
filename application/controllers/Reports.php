@@ -53,6 +53,7 @@
 			$data['notaxamt']+=$det['amount'];
 			endif;
 		$data['totamount']+=$det['amount'];
+		$data['totquantity']+=$det['quantity'];
 		endforeach;
 		if (strtoupper($data['summary']['party_state_io'])=='I'):
 			$data['cgst'] = $data['sgst'] = $gst/2;
