@@ -29,7 +29,8 @@ class Trns_summary extends CI_Controller{
 			
 			$crud->set_table('trns_summary')
 				->set_subject('Transaction')
-				->columns('series_id','no','date', 'party_id', 'expenses', 'amount','party_gstno', 'party_status','remark')
+				->set_theme('datatables')
+				->columns('id','series_id','no','date', 'party_id', 'expenses', 'amount','remark')
 				->display_as('series_id','Series')
 				->display_as('no','Trn Number')
 				->display_as('date','Date')
@@ -42,14 +43,22 @@ class Trns_summary extends CI_Controller{
 				->unset_delete()
 				->unset_edit()
 				->unset_print()
-				->set_relation('series_id','series','{location_name}-{payment_mode_name}-{tran_type_name}')
+				->set_relation('series_id','series','{payment_mode_name}-{tran_type_name}')
 				->set_relation('party_id','party','{name}--{city}')
 				->callback_column('amount',array($this,'_callback_amount'))
 				->callback_column('expenses',array($this,'_callback_expenses'))
+				/*
+				second parameter can be blank in datatables theme.
 				->add_action('Edit Summary',base_url('application/pencil.jpeg'),'','',array($this, 'check_editable'))
 				->add_action('View Details',base_url('application/view_details.png'),'trns_summary/view_details')
 				->add_action('Edi Details',base_url('application/view_details.png'),'trns_details/check_editable')
 				->add_action('Print Bill', base_url('application/print.png'), 'reports/print_bill');
+				*/
+				->add_action('Edit Summary','','','',array($this, 'check_editable'))
+				->add_action('View Details','','trns_summary/view_details')
+				->add_action('Edi Details','','trns_details/check_editable')
+				->add_action('Print Bill', '', 'reports/print_bill');
+				
 				$series = $this->Series_model->get_all_series_by_location();
 				
 				$s3 = 'series_id = ';

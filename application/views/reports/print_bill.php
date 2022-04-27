@@ -2,7 +2,7 @@
 tfpdf();
 //$amt = preg_replace("/(\d+?)(?=(\d\d)+(\d)(?!\d))(\.\d+)?/i", "$1,", $det['amount']);
 //$ntw = new \NTWIndia\NTWIndia();
-if (count($details)>12):
+if ((count($details)>12) OR ($summary['payment_mode_name']=='Credit' and $summary['tran_type_name'] == 'Sales')):
 $pdf = new tFPDF('P', 'mm', array(210,296));
 $y = 266;
 //$noofpages = ceil(count($details)/28);
@@ -26,9 +26,10 @@ $pdf->ln(2);
 $pdf->cell(190,0,'',1,1);
 $pdf->ln(5);
 $pdf->SetFont('Arial','B',12);
-$pdf->cell(95,5,$summary['payment_mode_name'].' - '.$summary['tran_type_name']. ' - '.$summary['no'],0,0,'L');
+$pdf->cell(60,5,$summary['payment_mode_name'].' - '.$summary['tran_type_name']. ' - '.$summary['no'],0,0,'L');
 $pdf->SetFont('Arial','',12);
-$pdf->cell(95,5,'Date: '.date('d-m-Y',strtotime($summary['date'])),0,1,'R');
+$pdf->cell(60,5,'Party GST No: '.$summary['party_gstno'],0,0,'L');
+$pdf->cell(60,5,'Date: '.date('d-m-Y',strtotime($summary['date'])),0,1,'R');
 $pdf->ln(3);
 $pdf->SetFont('Arial','',10);
 $pdf->Cell(100,5,'Party Name and Address: '.$party['name'].', '.$party['city'],0,0,'L');
