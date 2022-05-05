@@ -39,6 +39,7 @@
             <!--<li><a href="<?php echo site_url('Trnf_details/receive')?>">Receive Stock</a></li>-->
         </ul>
     </li>
+    <li><a href="<?php echo site_url('Po_summary/summary')?>">Purchase Order</a></li>
 	<!--<li><a href="#">Proforma</a>
 		<ul class="sub">
 			<li><a href="<?php echo site_url('Profo_Summary/summary')?>">Add Proforma</a></li>

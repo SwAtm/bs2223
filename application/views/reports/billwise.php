@@ -40,7 +40,9 @@ $pdf->cell(190,5, $d['name'],0,1,'C');
 	foreach ($d['det'] as $de):
 		$pdf->cell(20,5,$de['series'].'-'.$de['no'],1,0,'L');
 		$pdf->cell(20,5,$de['date'],1,0,'L');
-		$pdf->cell(50,5,$de['name'].'-'.$de['city'],1,0,'L');
+		$pdf->SetFont('Arial','',6);
+		$pdf->cell(50,5,substr($de['name'].'-'.$de['city'],0,40),1,0,'L');
+		$pdf->SetFont('Arial','',8);
 		$pdf->cell(15,5,number_format($de['bamount'],2,'.',','),1,0,'R');
 		$pdf->cell(15,5,number_format($de['ramount'],2,'.',','),1,0,'R');
 		$pdf->cell(15,5,number_format($de['expenses'],2,'.',','),1,0,'R');
