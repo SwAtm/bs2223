@@ -1,3 +1,15 @@
+<html>
+<style>
+
+th {
+	background-color: yellow;
+	position: sticky; 
+    top: 0px; 
+    padding: 0px 0px; 
+    height: 10px;
+    font-size: small;
+}
+</style>
 <?php
 //print_r($id);
 echo "<br>";
@@ -7,11 +19,11 @@ echo "<form method = POST action = ".site_url('po_details/edit').">";
 echo "<table align = center border=1>";
 echo "<tr><td colspan = 5 align = center>Purchase Order No.".$id." to ".$party['name']." - ".$party['city']."</td></tr>";
 
-echo "<tr><td>Item id</td><td>Name</td><td>Rate</td><td>CL Bal</td><td>Order</td></tr>";
+echo "<th>Item id</th><th>Name</th><th>Rate</th><th>CL Bal</th><th>Order</th>";
 $i=0;
 
 foreach ($items as $item):
-$rate=$item['myprice']+($item['myprice']*$item['gstrate']/100);
+$rate=number_format($item['myprice']+($item['myprice']*$item['gstrate']/100),2,".",",");
 $added=0;
 foreach ($addeditems as $aitem):
   if ($aitem['item_id']==$item['id'] and $rate==$aitem['rate']):
@@ -32,3 +44,4 @@ echo "<input type = hidden name = id value =$id>";
 echo "<tr><td colspan = 5><input type = submit name = submit value = Submit></td></tr></table>";
 echo "</form>";
 ?>
+</html>

@@ -41,7 +41,7 @@ $pdf->cell(190,5, $d['name'],0,1,'C');
 		$pdf->cell(18,5,$de['series'].'-'.$de['no'],1,0,'L');
 		$pdf->cell(18,5,$de['date'],1,0,'L');
 		$pdf->SetFont('Arial','',6);
-		$pdf->cell(54,5,substr($de['name'].'-'.$de['city'],0,35,1,0,'L');
+		$pdf->cell(54,5,substr($de['name'].'-'.$de['city'],0,35),1,0,'L');
 		$pdf->SetFont('Arial','',8);
 		$pdf->cell(15,5,number_format($de['bamount'],2,'.',','),1,0,'R');
 		$pdf->cell(15,5,number_format($de['ramount'],2,'.',','),1,0,'R');

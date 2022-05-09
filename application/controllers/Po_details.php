@@ -44,7 +44,7 @@ class Po_details extends CI_Controller{
 				endif;
 				
 			endforeach;
-			print_r($podetails);
+			//print_r($podetails);
 			if ($this->po_summary_model->add($podetails)):
 			echo "Data added. <a href =".site_url('po_summary/summary').">Go to PO List</a>";
 			else:
