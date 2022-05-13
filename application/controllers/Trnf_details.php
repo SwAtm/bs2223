@@ -34,7 +34,7 @@ class Trnf_details extends CI_Controller{
 				endif;
 				foreach ($inventory as $k=>$v):
 				//$inventory[$k]['rate']=number_format($v['myprice']*(100+$v['gstrate'])/100,2,'.',',') ;
-				$inventory[$k]['rate']=$v['myprice']*(100+$v['gstrate'])/100;
+				$inventory[$k]['rate']=number_format($v['myprice']*(100+$v['gstrate'])/100,'2','.',',');
 				endforeach;
 				$data['invent'] = $inventory;
 				$this->session->invent = $inventory;
@@ -43,7 +43,11 @@ class Trnf_details extends CI_Controller{
 				$this->load->view('templates/footer');	
 			
 			elseif(isset($_POST['add'])):
-
+				//if a non json entity is submitted:
+				if (!is_object(json_decode($_POST['item']))):
+					unset ($_POST);
+					redirect(site_url('Trnf_details/send'));
+				endif;
 
 				//submitted to add
 				$item = json_decode($_POST['item']);

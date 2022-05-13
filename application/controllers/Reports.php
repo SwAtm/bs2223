@@ -68,7 +68,7 @@
 		$text = "upi://pay?pa=".   			 // payment method.
                 "gpay-11192753290@okbizaxis".          // VPA number.
                 "&am=".number_format($data['totamount'],2,".",",").       // this param is for fixed amount (non editable).
-                "&pn=Yellappa%20Sunadolli".      // to showing your name in app.
+                "&pn=Ramakrishna%20Mission Ashrama, Belgaum".      // to showing your name in app.
                 "&cu=INR".                  // Currency code.
                 "&mode=02";                 // mode O2 for Secure QR Code.
                 //"&trxnID=".$data['summary']['payment_mode_name'].' - '.$data['summary']['tran_type_name']. ' - '.$data['summary']['no'];

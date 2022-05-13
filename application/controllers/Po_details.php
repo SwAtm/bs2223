@@ -88,7 +88,7 @@ class Po_details extends CI_Controller{
 	endif;
 	}
 	
-	public function print($id){
+	public function print1($id){
 	
 	$posummary = $this->po_summary_model->get_party($id);
 	$data['pos'] = array ('id'=>$id, 'date'=>$posummary['date'], 'name'=>$posummary['name'],'city'=>$posummary['city']);
