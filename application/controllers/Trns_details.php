@@ -188,9 +188,7 @@ public function purch_add_details(){
 						
 			endif;
 			foreach ($inventory as $k=>$v):
-				//$inventory[$k]['rate']=number_format($v['myprice']*(100+$v['gstrate'])/100,2,'.',',') ;
-				$inventory[$k]['rate']=$v['myprice']*(100+$v['gstrate'])/100;
-				
+				$inventory[$k]['rate']=number_format($v['myprice']*(100+$v['gstrate'])/100,2,'.',',') ;
 			endforeach;
 			$data['invent'] = $inventory;
 			$this->session->invent = $inventory;
@@ -559,8 +557,7 @@ public function purch_add_details(){
 				$deleted = $this->session->deleted;
 				
 				foreach ($inventory as $k=>$v):
-				//$inventory[$k]['rate']=number_format($v['myprice']*(100+$v['gstrate'])/100,2,'.',',') ;
-				$inventory[$k]['rate']=$v['myprice']*(100+$v['gstrate'])/100;
+				$inventory[$k]['rate']=number_format($v['myprice']*(100+$v['gstrate'])/100,2,'.',',') ;
 				endforeach;
 				
 				//add/subtract deleted quantity to/from inventory
