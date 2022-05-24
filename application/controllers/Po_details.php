@@ -48,7 +48,9 @@ class Po_details extends CI_Controller{
 				
 			endforeach;
 			//print_r($podetails);
-			if ($this->po_summary_model->add($podetails)):
+			if (!isset($podetails) or empty($podetails)):
+			echo "Nothing to add. <a href =".site_url('po_summary/summary').">Go to PO List</a>";
+			elseif ($this->po_summary_model->add($podetails)):
 			echo "Data added. <a href =".site_url('po_summary/summary').">Go to PO List</a>";
 			else:
 			echo "Failed to add data. <a href =".site_url('po_summary/summary').">Go to PO List</a>";
