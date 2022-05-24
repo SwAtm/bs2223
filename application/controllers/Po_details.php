@@ -35,6 +35,9 @@ class Po_details extends CI_Controller{
 		else:
 			//print_r($_POST);
 			$posid=$_POST['id'];
+			if (empty($_POST['podet']) or !isset($_POST['podet'])):
+			die ("Nothing to add.<a href = ".site_url('welcome/home').">Go Home</a>");
+			endif;
 			foreach ($_POST['podet'] as $item):
 				if (!isset($item['quantity']) or 0==$item['quantity']):
 					continue;

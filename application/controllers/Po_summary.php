@@ -27,6 +27,7 @@ class Po_summary extends CI_Controller{
 			->set_relation('party_id','party','{name}--{city}')
 			->add_action('Add Details','','po_details/add')
 			->add_action('Print', '', 'po_details/print1')
+			->required_fields('party_id','date')
 			->callback_before_insert(array($this, 'callback_remark'));
 			
 		$output = $crud->render();
