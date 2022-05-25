@@ -49,7 +49,7 @@ border: 1px solid black;
 <?php
 $items = array();
 foreach ($invent as $key) {
-	$items[] = array ('title' => $key['title']. "-".$key['rate'], 'value' => json_encode($key));
+	$items[] = array ('title' => $key['title']. "-".number_format($key['rate'],2,'.',','), 'value' => json_encode($key));
 }
 if (isset($calling_proc) and 'edit' == $calling_proc):
 	echo "<form method = POST action = ".site_url("trns_details/edit_sales_add/").">";

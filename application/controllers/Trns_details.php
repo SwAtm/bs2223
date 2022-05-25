@@ -188,8 +188,8 @@ public function purch_add_details(){
 						
 			endif;
 			foreach ($inventory as $k=>$v):
-				$inventory[$k]['rate']=number_format($v['myprice']*(100+$v['gstrate'])/100,2,'.',',') ;
-				//$inventory[$k]['rate']=$v['myprice']*(100+$v['gstrate'])/100;
+				//$inventory[$k]['rate']=number_format($v['myprice']*(100+$v['gstrate'])/100,2,'.',',') ;
+				$inventory[$k]['rate']=$v['myprice']*(100+$v['gstrate'])/100;
 			endforeach;
 			$data['invent'] = $inventory;
 			$this->session->invent = $inventory;
@@ -216,7 +216,7 @@ public function purch_add_details(){
 		//currently submitted data
 			$_POST['discount'] = $_POST['discount']==''?0:$_POST['discount'];
 			$_POST['cash_disc'] = $_POST['cash_disc']==''?0:$_POST['cash_disc'];
-			$details = array('inventory_id' => $item->id, 'item_id' => $item->item_id, 'myprice'=>$item->myprice, 'rate' => floatval(preg_replace('/[^\d.]/', '',$item->rate)), 'quantity' => $_POST['quantity'], 'discount' => $_POST['discount'], 'cash_disc' => $_POST['cash_disc'], 'hsn' => $item->hsn, 'gst_rate' => $item->gstrate, 'gcat_id'=>$item->gcat_id, 'rcm'=>$item->rcm, 'title' => $item->title);
+			$details = array('inventory_id' => $item->id, 'item_id' => $item->item_id, 'myprice'=>$item->myprice, 'rate' => $item->rate, 'quantity' => $_POST['quantity'], 'discount' => $_POST['discount'], 'cash_disc' => $_POST['cash_disc'], 'hsn' => $item->hsn, 'gst_rate' => $item->gstrate, 'gcat_id'=>$item->gcat_id, 'rcm'=>$item->rcm, 'title' => $item->title);
 		// first transaction - session is empty
 			if (!isset($this->session->sales_details)||empty($this->session->sales_details)):
 			$det[] = $details;
@@ -558,8 +558,8 @@ public function purch_add_details(){
 				$deleted = $this->session->deleted;
 				
 				foreach ($inventory as $k=>$v):
-				$inventory[$k]['rate']=number_format($v['myprice']*(100+$v['gstrate'])/100,2,'.',',') ;
-				//$inventory[$k]['rate']=$v['myprice']*(100+$v['gstrate'])/100;
+				//$inventory[$k]['rate']=number_format($v['myprice']*(100+$v['gstrate'])/100,2,'.',',') ;
+				$inventory[$k]['rate']=$v['myprice']*(100+$v['gstrate'])/100;
 				endforeach;
 				
 				//add/subtract deleted quantity to/from inventory
@@ -593,7 +593,7 @@ public function purch_add_details(){
 				$_POST['discount'] = $_POST['discount']==''?0:$_POST['discount'];
 				$_POST['cash_disc'] = $_POST['cash_disc']==''?0:$_POST['cash_disc'];
 				//currently submitted data
-				$itemtoadd = array('inventory_id' => $item->id, 'item_id' => $item->item_id, 'myprice'=>$item->myprice, 'rate' => floatval(preg_replace('/[^\d.]/', '',$item->rate)), 'quantity' => $_POST['quantity'], 'discount' => $_POST['discount'], 'cash_disc' => $_POST['cash_disc'], 'hsn' => $item->hsn, 'gst_rate' => $item->gstrate, 'gcat_id'=>$item->gcat_id, 'rcm'=>$item->rcm, 'title' => $item->title);
+				$itemtoadd = array('inventory_id' => $item->id, 'item_id' => $item->item_id, 'myprice'=>$item->myprice, 'rate' => $item->rate, 'quantity' => $_POST['quantity'], 'discount' => $_POST['discount'], 'cash_disc' => $_POST['cash_disc'], 'hsn' => $item->hsn, 'gst_rate' => $item->gstrate, 'gcat_id'=>$item->gcat_id, 'rcm'=>$item->rcm, 'title' => $item->title);
 
 				//first entery
 				if(!isset($this->session->toadd) or empty($this->session->toadd)):
