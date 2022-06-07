@@ -75,7 +75,7 @@ echo "</select>";
 
 */
 ?>
-<td><input type = number size = 15 name = quantity value = 1 min="1"></td>
+<td><input type = number size = 15 name = quantity required value = 1 min="1"></td>
 <td><input type = number size = 15 name = discount step = 0.01 placeholder = 0.00></td>
 <td><input type = number size = 15 name = cash_disc step = 0.01 placeholder = 0.00></td>
 <input type = hidden id = hsn>

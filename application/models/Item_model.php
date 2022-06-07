@@ -9,6 +9,7 @@ class Item_model extends CI_Model{
 	//called by Trns_details/purch_add_details, Trns_details/edit_purchase_add
 	$sql=$this->db->select('*');
 	$sql=$this->db->from('item');
+	$sql = $this->db->order_by('title ASC');
 	$sql=$this->db->get();
 	return $sql->result_array();
 	}

@@ -29,7 +29,7 @@ class Inventory_model extends CI_Model{
 		$sql = $this->db->from('inventory');
 		$sql = $this->db->join('item','item.id = inventory.item_id');
 		$sql = $this->db->where('location_id',$this->session->loc_id);
-		$sql = $this->db->order_by('item_id ASC, myprice ASC, id ASC');
+		$sql = $this->db->order_by('title ASC, myprice ASC, id ASC');
 		$sql=$this->db->get();
 		if ($sql and $sql->num_rows()>0):
 			return $sql->result_array();	

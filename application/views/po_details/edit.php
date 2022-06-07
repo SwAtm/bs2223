@@ -9,6 +9,14 @@ th {
     height: 10px;
     font-size: small;
 }
+
+tfoot {
+	background-color: yellow;
+	position: sticky; 
+    bottom: 0px;
+    height: 25px;
+
+}
 </style>
 <?php
 //print_r($id);
@@ -41,7 +49,11 @@ echo "<input type = hidden name = podet[$i][rate] value = $rate>";
 $i++;
 endforeach;
 echo "<input type = hidden name = id value =$id>";
-echo "<tr><td colspan = 5><input type = submit name = submit value = Submit></td></tr></table>";
+?>
+<tfoot>
+<?php
+echo "<tr><td colspan = 5 align = center><input type = submit name = submit value = Submit></td></tr></table>";
 echo "</form>";
 ?>
+</tfoot>
 </html>

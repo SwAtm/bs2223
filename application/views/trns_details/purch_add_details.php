@@ -74,7 +74,7 @@ foreach ($item as $key => $value) {
 ?>
 </datalist>
 </td><td><input type = number size = 15 maxlength = "11" name = rate required step = 0.01 placeholder = 0.00 id = rate></td>
-<td><input type = number size = 15 name = quantity value = 1></td>
+<td><input type = number size = 15 name = quantity required value = 1></td>
 <td><input type = number size = 15 name = discount step = 0.01 placeholder = 0.00></td>
 <td><input type = number size = 15 name = cash_disc step = 0.01 placeholder = 0.00></td>
 <td><input type = text size = 4 maxlenght = "4" name = hsn required oninput="this.value=this.value.replace(/[^0-9]/g,'');"></td>

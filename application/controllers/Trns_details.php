@@ -37,7 +37,7 @@ public function purch_add_details(){
 		//for adding
 		unset($_POST['add']);
 		//if a non json entity is submitted:
-		if (!is_object(json_decode($_POST['item']))):
+		if (!is_object(json_decode($_POST['item'])) or ''==$_POST['quantity'] or empty($_POST['quantity'])):
 			unset ($_POST);
 			redirect(site_url('Trns_details/purch_add_details'));
 		endif;
@@ -205,7 +205,7 @@ public function purch_add_details(){
 		
 		elseif(isset($_POST['add'])):
 		//if a non json entity is submitted:
-		if (!is_object(json_decode($_POST['item']))):
+		if (!is_object(json_decode($_POST['item'])) or ''==$_POST['quantity'] or empty($_POST['quantity'])):
 			unset ($_POST);
 			redirect(site_url('Trns_details/sales_add_details'));
 		endif;
@@ -435,7 +435,7 @@ public function purch_add_details(){
 			elseif(isset($_POST['add'])):
 				unset($_POST['add']);
 				//if a non json entity is submitted:
-					if (!is_object(json_decode($_POST['item']))):
+					if (!is_object(json_decode($_POST['item'])) or ''==$_POST['quantity'] or empty($_POST['quantity'])):
 					unset ($_POST);
 				redirect(site_url('Trns_details/edit_purchase_add'));
 				endif;
@@ -583,7 +583,7 @@ public function purch_add_details(){
 			//to add
 			elseif(isset($_POST['add'])):
 				//if a non json entity is submitted:
-				if (!is_object(json_decode($_POST['item']))):
+				if (!is_object(json_decode($_POST['item'])) or ''==$_POST['quantity'] or empty($_POST['quantity'])):
 					unset ($_POST);
 					redirect(site_url('Trns_details/edit_sales_add'));
 				endif;
