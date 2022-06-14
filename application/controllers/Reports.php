@@ -179,7 +179,7 @@
 			endforeach;
 			unset($tempr);
 			
-			print_r($details1);
+			//print_r($details1);
 			
 			//$data['dates']=$dates;			,
 			$data['details']=$details;

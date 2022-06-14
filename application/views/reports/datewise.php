@@ -85,6 +85,9 @@ $pdf->cell(125,5, $d['name'],0,1,'C');
 	$totalsgst+=$sgst;
 	$totaligst+=$igst;
 	$totalamount+=$amount;
+	if ($pdf->getY()>266):
+		$pdf->AddPage();
+	endif;
 endforeach;
 	$pdf->ln(5);
 	/*$pdf->cell(20,5,'GrandTotal',1,0,'C');
@@ -122,6 +125,21 @@ foreach ($details1 as $dt):
 		$pdf->cell(15,5,number_format($dt['cash']+$dt['cashexp'],2,'.',','),1,0,'R');
 		$pdf->cell(15,5,number_format($dt['upi']+$dt['upiexp'],2,'.',','),1,1,'R');
 		
+		if ($pdf->getY()>266):
+		//$pdf->cell(15,5,$pdf->getY(),1,1,'R');
+		$pdf->AddPage();
+			$pdf->cell(155,5,'Summary',1,1,'C');
+			$pdf->cell(20,5,'Date',1,0,'L');
+			$pdf->cell(15,5,'Books',1,0,'L');
+			$pdf->cell(15,5,'Articles',1,0,'L');
+			$pdf->cell(15,5,'Expenses',1,0,'L');
+			$pdf->cell(15,5,'CGST',1,0,'L');
+			$pdf->cell(15,5,'SGST',1,0,'L');
+			$pdf->cell(15,5,'IGST',1,0,'L');
+			$pdf->cell(15,5,'TOTAL',1,0,'L');
+			$pdf->cell(15,5,'CASH',1,0,'L');
+			$pdf->cell(15,5,'UPI',1,1,'L');
+		endif;
 endforeach;
 
 if ($c>13):
