@@ -137,6 +137,49 @@ class Trns_details_model extends CI_Model{
 		//where t.date>=\"$frdate\" and t.date<=\"$todate\" and t.series  = \"$s\"
 		return $this->db->query($sql, array ($frdate, $todate, $s))->result_array();	
 		}
+		
+		
+		public function get_datewise_compdetails($dat, $series){
+		//called by reports/tran_report
+		$sql = "select t.date, sum(t.expenses) as texpenses, sum(d.bamount) as tbamount, sum(d.ramount) as tramount, sum(d.cgst) as tcgst, sum(d.sgst) as tsgst, sum(d.igst) as tigst, sum(e.cash) as cash, sum(e.upi) as upi, sum(e.cashexp) as cashexp, sum(e.upiexp) as upiexp
+		from 
+		(select trns_summary.id, trns_summary.series, trns_summary.date, trns_summary.expenses from trns_summary ) as t
+		join
+		(select trs.id, round(sum(if(item_cat.name = \"Books\", (((td.rate-cash_disc)*td.quantity)-(((td.rate-cash_disc)*td.quantity)*discount/100))/(100+td.gst_rate)*100,0)),2) as bamount, 
+		round(sum(if(item_cat.name = \"Articles\", (((td.rate-cash_disc)*td.quantity)-(((td.rate-cash_disc)*td.quantity)*discount/100))/(100+td.gst_rate)*100,0)),2) as ramount, 
+		round (sum(if(trs.party_state_io= \"I\",
+		(((td.rate-cash_disc)*td.quantity)-(((td.rate-cash_disc)*td.quantity)*discount/100))/(100+td.gst_rate)*td.gst_rate,0)),2)/2 as cgst,
+		round (sum(if(trs.party_state_io= \"I\",
+		(((td.rate-cash_disc)*td.quantity)-(((td.rate-cash_disc)*td.quantity)*discount/100))/(100+td.gst_rate)*td.gst_rate,0)),2)/2 as sgst,
+		round (sum(if(trs.party_state_io= \"O\",
+		(((td.rate-cash_disc)*td.quantity)-(((td.rate-cash_disc)*td.quantity)*discount/100))/(100+td.gst_rate)*td.gst_rate,0)),2) as igst
+		from trns_summary as trs
+		join trns_details as td on trs.id = td.trns_summary_id
+		join item on td.item_id = item.id 
+		join item_cat on item_cat.id = item.cat_id 
+		group by trs.id) as d
+		on t.id = d.id 
+		join
+		(select trns.id, trns.date, round(sum(if(series.payment_mode_name = \"Cash\", (((trnd.rate-cash_disc)*trnd.quantity)-(((trnd.rate-cash_disc)*trnd.quantity)*discount/100)),0)),2) as cash, 
+		round(sum(if(series.payment_mode_name = \"UPI\", (((trnd.rate-cash_disc)*trnd.quantity)-(((trnd.rate-cash_disc)*trnd.quantity)*discount/100)),0)),2) as upi,
+		if(series.payment_mode_name=\"Cash\",trns.expenses,0) as cashexp,
+		if(series.payment_mode_name=\"UPI\",trns.expenses,0) as upiexp
+		from trns_summary as trns join
+		trns_details as trnd on trns.id = trnd.trns_summary_id join
+		series on series.series = trns.series
+		group by trns.id) as e
+		on t.id = e.id
+		where t.date=? and t.series in ?
+		group by t.date";
+		//  and t.series = $s";	
+		//where t.date>=\"$frdate\" and t.date<=\"$todate\" and t.series  = \"$s\"
+		$result = $this->db->query($sql, array ($dat, $series));	
+		if ($result and $result->row_array()):
+		return $result->row_array();
+		else:
+		return false;
+		endif;
+		}
 
 		public function gstb2b($frdate, $todate){
 		//called by reports/gstreports

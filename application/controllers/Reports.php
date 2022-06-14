@@ -147,10 +147,47 @@
 			$ser = $this->Series_model->get_details_from_series($s);
 			$details[$s]['name'] = $ser['payment_mode_name']." - ".$ser['tran_type_name'];
 			endforeach;
+			$c=0;
+			foreach ($details as $dc):
+				foreach ($dc['det'] as $dcdet):
+					if (!empty($dcdet)):
+						$c++;
+					endif;
+				endforeach;
+			endforeach;
+			echo $c;
+			if ($c==0):
+			die ("No transcations. <a href=".site_url('welcome/home').">Go Home</a>");
+			endif;
+			//get all dates in an array
+			$end = new DateTime($todate);
+			$end = $end->modify( '+1 day' );
+			$dater= new DatePeriod(new DateTime($frdate), new DateInterval('P1D'), $end);
+			$im=0;
+			foreach ($dater as $da):
+			$dates[]=$da->format('Y-m-d');
+			endforeach;
+			print_r($dates);
+			foreach ($dates as $dat):
+			$tempr=array();
+			if ($tempr=$this->Trns_details_model->get_datewise_compdetails($dat,$series)):
+			$details1[$im]=$this->Trns_details_model->get_datewise_compdetails($dat,$series);
+			$im++;
+			else:
+			continue;
+			endif;
+			endforeach;
+			unset($tempr);
+			
+			print_r($details1);
+			
+			//$data['dates']=$dates;			,
 			$data['details']=$details;
+			$data['details1']=$details1;
 			$data['frdate']=$frdate;
 			$data['todate']=$todate;
-			$data['rtype']=$this->input->post('rtype');
+			$data['rtype']=$this->input->post('rtype');			
+				
 			$this->load->view('reports/datewise', $data);
 			endif;
 			$this->load->view('templates/footer');
