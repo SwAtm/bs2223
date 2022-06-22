@@ -56,7 +56,7 @@ class Trns_summary extends CI_Controller{
 				*/
 				->add_action('Edit Summary','','','',array($this, 'check_editable'))
 				->add_action('View Details','','trns_summary/view_details')
-				->add_action('Edi Details','','trns_details/check_editable')
+				->add_action('Edi Details','','trns_details/check_editable1')
 				->add_action('Print Bill', '', 'reports/print_bill');
 				
 				$series = $this->Series_model->get_all_series_by_location();

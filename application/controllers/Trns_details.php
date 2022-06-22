@@ -325,6 +325,23 @@ public function purch_add_details(){
 			endif;				
 		}
 
+		public function check_editable1(){
+			$id = $this->uri->segment(3);
+			$tran = $this->Trns_summary_model->get_details_by_id($id);
+			$tran_type_name = $tran['tran_type_name'];
+			$party_status = $tran['party_status'];
+			if (($tran_type_name == 'Sales' || $tran_type_name == 'Sale Return') AND ($party_status == 'REGD')):
+					$this->load->view('templates/header');	
+				//$this->output->append_output(."<br>");
+				$this->output->append_output("This is a B2B Transaction.<a href =".site_url('trns_summary/summary').">Go to List</a href>. Do you want to continue? <a href=".site_url('trns_details/check_editable/'.$id).">Continue</a>");
+				$this->load->view('templates/footer');
+			else:
+			$this->check_editable($id);
+			endif;	
+		}
+		
+		
+		
 		public function check_editable(){
 			//common for sales/purchase
 			$id = $this->uri->segment(3);
@@ -334,11 +351,9 @@ public function purch_add_details(){
 			$date = $tran['date'];
 			$payment_mode_name = $tran['payment_mode_name'];
 			$mess = '';
-			//B2B sales/sale return not allowed:
-			if (($tran_type_name == 'Sales' || $tran_type_name == 'Sale Return') AND ($party_status == 'REGD')):
-				$mess = "This is a B2B Sales or Sale Return, cannot be edited";
+			
 			//Earlier month's transactions not allowed:
-			elseif (date('m',strtotime($date))!=Date('m')):
+			if (date('m',strtotime($date))!=Date('m')):
 				$mess = "This transaction belongs to earlier month, cannot be edited";
 			//Cash transactions of earlier day not allowed:
 			elseif ($payment_mode_name == 'Cash' and date('Y-m-d',strtotime($date)) != Date('Y-m-d')):
