@@ -16,22 +16,36 @@
 <body>
 
 <ul id="menu-v">
+<?php
+if($_SESSION['loc_name']=='Fort Ashrama'):
+    ?>
     <li><a href="<?php echo site_url('party/party')?>">Add/Edit Party</a></li>
     <li><a href="<?php echo site_url('item/item')?>">Add/Edit Item</a></li>
     <li><a href="<?php echo site_url('trns_summary/summary')?>">Add/Edit Transaction</a></li>
-
-    
-    
+<?php
+else:
+?>
+    <li><a href="<?php echo site_url('trns_summary/summary')?>">Add/Edit Transaction</a></li>
+<?php 
+endif;
+?>   
     
     <li><a href="#">Reports</a>
         <ul class="sub">
             <li><a href="<?php echo site_url('Reports/tran_report')?>">Non GST Reports</a></li>
+<?php
+if($_SESSION['loc_name']=='Fort Ashrama'):
+            ?>
             <li><a href="<?php echo site_url('Reports/gstreports')?>">GST Reports</a></li>
-
+<?php
+endif;
+?>
             
        </ul>
     </li>
-    
+  <?php
+if($_SESSION['loc_name']=='Fort Ashrama'):
+?>  
     <li><a href = '#'>Stock Transfer</a>
         <ul class = "sub">
             <li><a href="<?php echo site_url('Trnf_summary/summary')?>">List Summary</a></li>
@@ -42,10 +56,13 @@
     <li><a href="<?php echo site_url('Po_summary/summary')?>">Purchase Order</a></li>
     <li><a href = '#'>Party Ledger</a>
         <ul class = "sub">
-            <li><a href="<?php echo site_url('Party_ledger/ledger')?>">Ledger</a></li>
-            <li><a href="<?php echo site_url('Party_trans/summary')?>">Party Transactions</a></li>
+            <li><a href="<?php echo site_url('Party_trans/ledger')?>">Ledger</a></li>
+            <li><a href="<?php echo site_url('Party_trans/transactions')?>">Party Transactions</a></li>
         </ul>
     </li>
+<?php
+endif;
+?>	
 	<!--<li><a href="#">Proforma</a>
 		<ul class="sub">
 			<li><a href="<?php echo site_url('Profo_Summary/summary')?>">Add Proforma</a></li>

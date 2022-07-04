@@ -16,12 +16,13 @@ class Party_trans extends CI_Controller{
 		$this->load->model('Party_model');
 		$this->load->model('Trns_details_model');
 		$this->load->model('Trns_summary_model');
-
+		$this->load->model('Party_trans_model');
+		$this->load->helper('pdf_helper');
 }
 
 
 
-		public function summary()
+		public function transactions()
 		
 	{
 			$crud = new grocery_CRUD();
@@ -31,6 +32,8 @@ class Party_trans extends CI_Controller{
 				->set_subject('Transaction')
 				->set_theme('datatables')
 				->columns('id','type','no', 'date','party_id','mop', 'chno', 'chdate','amount','remark')
+				->add_fields('no', 'date', 'type', 'party_id','mop', 'chno','chdate','amount','remark')
+				->required_fields('party_id','type','amount')
 				->display_as('type','Trn Type')
 				->display_as('no','Trn Number')
 				->display_as('date','Date')
@@ -45,13 +48,6 @@ class Party_trans extends CI_Controller{
 				->field_type('mop','dropdown',array('cash'=>'Cash','chq'=>'Cheque/DD', 'bktr'=>'Bank Transfer'))
 				->set_relation('party_id','party','{name}--{city}');
 							
-				/*
-				second parameter can be blank in datatables theme.
-				->add_action('Edit Summary',base_url('application/pencil.jpeg'),'','',array($this, 'check_editable'))
-				->add_action('View Details',base_url('application/view_details.png'),'trns_summary/view_details')
-				->add_action('Edi Details',base_url('application/view_details.png'),'trns_details/check_editable')
-				->add_action('Print Bill', base_url('application/print.png'), 'reports/print_bill');
-				*/
 				
 				$output = $crud->render();
 	
@@ -65,6 +61,70 @@ class Party_trans extends CI_Controller{
 		$this->load->view('our_template.php',$output);    
 		$this->load->view('templates/footer');
 	}   
+	
+		function ledger(){
+		
+		$data['ledger']=$this->Trns_details_model->ledger();
+		
+		$this->load->view('templates/header');
+		$this->load->view('party_trans/ledger',$data);    
+		$this->load->view('templates/footer');
+		
+		
+		}
+		
+		function ind_ledger(){
+		$id = $this->uri->segment(3);
+		$data['party']=$this->Party_model->get_details($id);
+		$data['trans']=$this->Trns_details_model->ind_ledger($id);
+		$data['rtpt']=$this->Party_trans_model->get_details_by_party($id);
+		$data['location']=$this->session->loc_name;
+		$ledger=array();
+		if ($data['party']['obl']>0):
+		$debit=$data['party']['obl'];
+		$credit=0;
+		else:
+		$debit=0;
+		$credit=0-$data['party']['obl'];
+		endif;
+		$ledger[]=array('date'=>"0000-00-00", 'doc'=>'Op Bal', 'debit'=>$debit, 'credit'=>$credit, 'balance'=>0, 'remark'=>'');
+		if (isset($data['trans']) and !empty($data['trans'])):
+			foreach ($data['trans'] as $trans):
+				if($trans['trantype']=='Sales'):
+				$debit=$trans['amount'];
+				$credit=0;
+				else:
+				$debit=0;
+				$credit=$trans['amount'];
+				endif;
+			$doc=$trans['trantype'];	
+			$ledger[]=array('date'=>$trans['date'], 'doc'=>$doc.' '.$trans['series'].'-'.$trans['no'], 'debit'=>$debit, 'credit'=>$credit, 'balance'=>0, 'remark'=>$trans['remark']);
+			endforeach;
+		endif;
+		if (isset($data['rtpt']) and !empty($data['rtpt'])):
+			foreach ($data['rtpt'] as $rtpt):
+				if($rtpt['type']=='rct'):
+				$debit=0;
+				$credit=$rtpt['amount'];
+				else:
+				$debit=$rtpt['amount'];
+				$credit=0;
+				endif;
+			$doc=$rtpt['type'];
+			$ledger[]=array('date'=>$rtpt['date'], 'doc'=>$doc.' '.$rtpt['no'], 'debit'=>$debit, 'credit'=>$credit, 'balance'=>0,'remark'=>$rtpt['remark']);
+			endforeach;
+		endif;
+		array_multisort(array_column($ledger, 'date'), SORT_ASC, $ledger);
+		$balance=0;
+		foreach ($ledger as $key=>$val):
+		$ledger[$key]['balance']=$balance+$val['debit']-$val['credit'];
+		$balance=$ledger[$key]['balance'];
+		endforeach;
+		$data['ledger']=$ledger;
+		$this->load->view('templates/header');
+		$this->load->view('party_trans/ind_ledger',$data);    
+		$this->load->view('templates/footer');
+	}
 	/*
 		public function _callback_amount($id, $row)
 		{

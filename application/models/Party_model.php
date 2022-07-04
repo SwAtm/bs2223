@@ -14,7 +14,7 @@ class Party_model extends CI_Model{
 	}
 
 	public function get_details($id){
-	//trns_details/sales_complete_details, trns_summary/summary_edit, trns_details/purch_complete_details, reports/print_bill
+	//trns_details/sales_complete_details, trns_summary/summary_edit, trns_details/purch_complete_details, reports/print_bill, party_trans/ind_ledger
 	$sql=$this->db->select('*');
 	$sql=$this->db->from('party');
 	$sql=$this->db->where('id', $id);

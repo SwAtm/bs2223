@@ -332,6 +332,52 @@ class Trns_details_model extends CI_Model{
 		return $this->db->query($sql, array ($frdate, $todate))->result_array();	
 	}
 		
-
-
+		public function ledger(){
+		//called by party_trans/ledger
+		$sql = "select a.id, a.name, a.city, a.obl, b.salesexp, b.purchexp, c.salepr, c.purchsr, d.rpt, d.pmt from
+		(select party.id, party.name, party.city, party.obl from party) as a
+		left join
+		(select trns_summary.party_id, sum(if(series.tran_type_name='Sales' and series.payment_mode_name='Credit' or series.tran_type_name='Purchase Return' and  series.payment_mode_name='Credit',trns_summary.expenses,0)) as salesexp, sum(if(series.tran_type_name='Purchase' and series.payment_mode_name='Credit' or series.tran_type_name='Sales Return' and series.payment_mode_name='Credit' ,trns_summary.expenses,0)) as purchexp from party
+		join trns_summary 
+		on party.id = trns_summary.party_id
+		left join series on series.series=trns_summary.series
+		group by party.id) as b
+		on a.id = b.party_id
+		left join
+		(select party.id as pid, round(sum(if(series.tran_type_name = 'Sales'  and series.payment_mode_name='Credit' or series.tran_type_name='Purchase Return' and series.payment_mode_name='Credit', (((td.rate-cash_disc)*td.quantity)-(((td.rate-cash_disc)*td.quantity)*discount/100)),0)),2) as salepr, 
+		round(sum(if(series.tran_type_name = 'Purchase' and series.payment_mode_name='Credit'  or series.tran_type_name='Sale Return' and series.payment_mode_name='Credit' , (((td.rate-cash_disc)*td.quantity)-(((td.rate-cash_disc)*td.quantity)*discount/100)),0)),2) as purchsr
+		from party join trns_summary as trs on party.id = trs.party_id
+		join trns_details as td on trs.id = td.trns_summary_id
+		join series on series.series = trs.series
+		group by pid) as c
+		on a.id=c.pid
+		left join
+		(select party_trans.party_id as partyid, round(sum(if(party_trans.type = 'rct',amount,0)),2) as rpt, round(sum(if(party_trans.type != 'rct',amount,0)),2) as pmt from party_trans
+		group by party_trans.party_id) as d
+		on a.id = d.partyid
+		where a.obl<>0 or b.salesexp<>0 or b.purchexp<>0 or c.salepr<>0 or c.purchsr<>0 or d.rpt<>0 or d.pmt<>0
+		";
+		return $this->db->query($sql)->result_array();	
+		//where series.location_name=? where a.salesexp<>0 or a.purchexp<>0 or b.salepr<>0 or b.purchsr<>0 or c.rpt<>0 or c.pmt<>0 where series.location_name=?
+		
+		}
+			
+		public function ind_ledger($id){
+		//called by party_trans/ind_ledger
+		$sql="select a.*, b.*, c.mop, c.trantype from
+		(select trns_summary.id, trns_summary.series, trns_summary.no, trns_summary.date, trns_summary.expenses, trns_summary.remark from trns_summary) as a
+		join 
+		(select series.series, series.payment_mode_name as mop, series.tran_type_name as trantype from series 
+		where series.payment_mode_name='Credit') as c
+		on a.series=c.series
+		join
+		(select trns_summary.id as trsid, round(sum((((td.rate-cash_disc)*td.quantity)-(((td.rate-cash_disc)*td.quantity)*discount/100))),2) as amount
+		from trns_details as td
+		join trns_summary on trns_summary.id = td.trns_summary_id
+		where trns_summary.party_id=?
+		group by trns_summary.id) as b
+		on a.id=b.trsid";
+		return $this->db->query($sql, array ($id))->result_array();	
+		
+		}	
 }
