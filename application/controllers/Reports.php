@@ -33,6 +33,7 @@
 		$data['taxamt'] = 0;
 		$data['notaxamt'] = 0;
 		$data['totamount']= 0;
+		$data['totquantity']=0;
 		
 		//This is not reqd now. If RCM comes into effect, then this will be reqd since then in details file gst rate would have been recorded to work out RCM.
 		/*
@@ -66,7 +67,8 @@
 		//generate QR Code for UPI Sales
 		if ($data['summary']['payment_mode_name'] == "UPI" and $data['summary']['tran_type_name'] == "Sales"):
 		$text = "upi://pay?pa=".   			 // payment method.
-                "gpay-11192753290@okbizaxis".          // VPA number.
+                //"gpay-11192753290@okbizaxis".          // VPA number.
+                "373901010035580@UBIN0537390.ifsc.npci".          // VPA number.
                 "&am=".number_format($data['totamount'],2,".",",").       // this param is for fixed amount (non editable).
                 "&pn=Ramakrishna%20Mission Ashrama, Belgaum".      // to showing your name in app.
                 "&cu=INR".                  // Currency code.
