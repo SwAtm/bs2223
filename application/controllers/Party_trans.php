@@ -91,11 +91,11 @@ class Party_trans extends CI_Controller{
 		if (isset($data['trans']) and !empty($data['trans'])):
 			foreach ($data['trans'] as $trans):
 				if($trans['trantype']=='Sales'):
-				$debit=$trans['amount'];
+				$debit=$trans['amount']+$trans['expenses'];
 				$credit=0;
 				else:
 				$debit=0;
-				$credit=$trans['amount'];
+				$credit=$trans['amount']+$trans['expenses'];
 				endif;
 			$doc=$trans['trantype'];	
 			$ledger[]=array('date'=>$trans['date'], 'doc'=>$doc.' '.$trans['series'].'-'.$trans['no'], 'debit'=>$debit, 'credit'=>$credit, 'balance'=>0, 'remark'=>$trans['remark']);
