@@ -398,7 +398,7 @@ class Trns_details_model extends CI_Model{
 		(select party_trans.party_id as partyid, round(sum(if(party_trans.type = 'rct',amount,0)),2) as rpt, round(sum(if(party_trans.type != 'rct',amount,0)),2) as pmt from party_trans
 		group by party_trans.party_id) as d
 		on a.id = d.partyid
-		where a.obl<>0 or b.salesexp<>0 or b.purchexp<>0 or c.salepr<>0 or c.purchsr<>0 or d.rpt<>0 or d.pmt<>0
+		where a.obl<>0 or b.salesexp<>0 or b.purchexp<>0 or c.salepr<>0 or c.purchsr<>0 or d.rpt<>0 or d.pmt<>0 order by a.name
 		";
 		return $this->db->query($sql)->result_array();	
 		//where series.location_name=? where a.salesexp<>0 or a.purchexp<>0 or b.salepr<>0 or b.purchsr<>0 or c.rpt<>0 or c.pmt<>0 where series.location_name=?
