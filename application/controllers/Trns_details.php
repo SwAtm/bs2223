@@ -168,10 +168,13 @@ public function purch_add_details(){
 			$this->db->trans_complete();
 			unset($_SESSION['purchase_details']);
 			unset($_SESSION['item']);
+			redirect(site_url('Reports/print_bill/'.$trns_summary_id));
+			/*
 			$this->load->view('templates/header');
 			$this->output->append_output("<a href = ".site_url('trns_summary/summary').">Go to List</a hre><br>");
 			$this->output->append_output("<a href =".site_url('welcome/home').">Home</a href>");
 			$this->load->view('templates/footer');
+			*/
 		endif;	
 
 	}
@@ -319,9 +322,12 @@ public function purch_add_details(){
 				$this->db->trans_complete();
 				unset($_SESSION['invent']);
 				unset($_SESSION['sales_details']);
+				redirect(site_url('Reports/print_bill/'.$trns_summary_id));
+				/*
 				$this->load->view('templates/header');
 				$this->output->append_output("<a href =".site_url('trns_summary/summary').">Go to List</a href>");
 				$this->load->view('templates/footer');	
+				*/
 			endif;				
 		}
 
@@ -559,7 +565,7 @@ public function purch_add_details(){
 				//print_r($_SESSION);
 				$this->db->trans_complete();	
 				$this->load->view('templates/header');	
-				$this->output->append_output("<a href = ".site_url('trns_summary/summary').">Go to List</a href>");
+				$this->output->append_output("<a href = ".site_url('Welcome/home').">Go Home</a href>");
 				$this->load->view('templates/footer');	
 			endif;	
 			}
@@ -679,7 +685,7 @@ public function purch_add_details(){
 				//print_r($_SESSION);
 				$this->db->trans_complete();
 				$this->load->view('templates/header');	
-				$this->output->append_output("<a href =".site_url('trns_summary/summary').">Go to List</a href>");
+				$this->output->append_output("<a href =".site_url('Welcome/home').">Go Home</a href>");
 				$this->load->view('templates/footer');	
 			endif;
 

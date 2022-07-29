@@ -13,6 +13,7 @@ endif;
 $i=1;
 $pdf->setLeftMargin(10);
 $pdf->SetAutoPageBreak(false);
+$pdf->SetFillColor(200);
 $pdf->AddPage();
 $pdf->SetFont('Arial','B',14);
 $pdf->Image(base_url(IMGPATH.'logo.jpg'),10,10,15,'');
@@ -123,8 +124,12 @@ if ($summary['payment_mode_name'] == "UPI" and $summary['tran_type_name'] == "Sa
 $pdf->Image(SAVEPATH.'qrc.png',165,$y,'15','');
 endif;
 
-$pdf->Image(base_url(IMGPATH.'home.png'),85,$y+10,5,'','',site_url('welcome/home'));
-$pdf->Image(base_url(IMGPATH.'list.png'),105,$y+10,5,'','',site_url('trns_summary/summary'));
+//$pdf->Image(base_url(IMGPATH.'home.png'),85,$y+10,5,'','',site_url('welcome/home'));
+//$pdf->Image(base_url(IMGPATH.'list.png'),105,$y+10,5,'','',site_url('trns_summary/summary'));
+$pdf->ln(5);
+$pdf->Cell(63,5,'Home',0, 0, 'C',1, site_url('welcome/home'));
+$pdf->Cell(63,5,'List',0, 0, 'C',1, site_url('trns_summary/summary'));
+$pdf->Cell(63,5,'Add Sales',0, 1, 'C',1, site_url('trns_details/sales_add_details'));
 $pdf->SetY($y+10);
 $pdf->Cell(190,5,'Signature',0,0,'R');
 $filename="bill_".$summary['payment_mode_name'].' - '.$summary['tran_type_name']. ' - '.$summary['no'].".pdf";

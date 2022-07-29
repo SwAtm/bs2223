@@ -19,13 +19,25 @@
 <?php
 if($_SESSION['loc_name']=='Fort Ashrama'):
     ?>
-    <li><a href="<?php echo site_url('party/party')?>">Add/Edit Party</a></li>
-    <li><a href="<?php echo site_url('item/item')?>">Add/Edit Item</a></li>
-    <li><a href="<?php echo site_url('trns_summary/summary')?>">Add/Edit Transaction</a></li>
+	<li><a href="<?php echo site_url('party/party')?>">Add/Edit Party</a></li>
+	<li><a href="<?php echo site_url('item/item')?>">List/Edit Item</a></li>
+	<li><a href="#">Transactions</a>
+		<ul class="sub">
+			<li><a href="<?php echo site_url('trns_summary/summary')?>">List/Edit Transaction</a></li>
+			<li><a href="<?php echo site_url('trns_details/sales_add_details')?>">Add Sales</a></li>
+			<li><a href="<?php echo site_url('trns_details/purch_add_details')?>">Add Purchase</a></li>
+		</ul>
+	</li>
 <?php
 else:
 ?>
-    <li><a href="<?php echo site_url('trns_summary/summary')?>">Add/Edit Transaction</a></li>
+    <li><a href="#">Transactions</a>
+		<ul class="sub">
+			<li><a href="<?php echo site_url('trns_summary/summary')?>">List/Edit Transaction</a></li>
+			<li><a href="<?php echo site_url('trns_details/sales_add_details')?>">Add Sales</a></li>
+		</ul>
+    </li>
+    
 <?php 
 endif;
 ?>   
