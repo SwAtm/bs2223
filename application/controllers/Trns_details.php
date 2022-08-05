@@ -356,6 +356,7 @@ public function purch_add_details(){
 			$party_status = $tran['party_status'];
 			$date = $tran['date'];
 			$payment_mode_name = $tran['payment_mode_name'];
+			$remark = $tran['remark'];
 			$mess = '';
 			
 			//Earlier month's transactions not allowed:
@@ -364,6 +365,10 @@ public function purch_add_details(){
 			//Cash transactions of earlier day not allowed:
 			elseif ($payment_mode_name == 'Cash' and date('Y-m-d',strtotime($date)) != Date('Y-m-d')):
 				$mess = "This is a cash transaction of an earlier day, cannot be edited";
+			endif;
+			//cancelled bills not allowed
+			if ($remark=='Cancelled'):
+				$mess = "This is a cancelled bill, cannot be edited";
 			endif;
 			if (''!=$mess):
 				$this->load->view('templates/header');	
@@ -458,8 +463,8 @@ public function purch_add_details(){
 				//if a non json entity is submitted:
 					if (!is_object(json_decode($_POST['item'])) or ''==$_POST['quantity'] or empty($_POST['quantity'])):
 					unset ($_POST);
-				redirect(site_url('Trns_details/edit_purchase_add'));
-				endif;
+					redirect(site_url('Trns_details/edit_purchase_add'));
+					endif;
 				$_POST['item_id']=json_decode($_POST['item'])->item_id;
 				$_POST['rcm']=json_decode($_POST['item'])->rcm;
 				$_POST['gcat_id']=json_decode($_POST['item'])->gcat_id;
@@ -484,21 +489,24 @@ public function purch_add_details(){
 				$this->load->view('templates/footer');	
 			else:
 			//bill is complete.
+				$countdeleted=$countretained=$counttoadd=0;
 				if (isset($this->session->deleted) and !empty($this->session->deleted)):
 					$deleted = $this->session->deleted;
-				
+					$countdeleted=count($deleted);
 				endif;
 				if (isset($this->session->retained) and !empty($this->session->retained)):
-						$retained = $this->session->retained;
+					$retained = $this->session->retained;
+					$countretained=count($retained);
 				endif;
 				if (isset($this->session->toadd) and !empty($this->session->toadd)):
 					$toadd = $this->session->toadd;
+					$counttoadd=count($toadd);
 				endif;
 				$this->db->trans_start();
 				//adding to inventory
 				if (isset($toadd) and !empty($toadd)):
 				
-				foreach ($toadd as $key => $value) {
+				foreach ($toadd as $key => $value):
 					//if the party is not REGD, input tax shoule be nil.
 					if ($this->session->party_status!='REGD'):
 					$value['gst_rate']=0;
@@ -535,23 +543,27 @@ public function purch_add_details(){
 					$trns_details['gcat_id'] =  $value['gcat_id'];
 					$trns_details['rcm'] =  $value['rcm'];
 					$this->Trns_details_model->add($trns_details);
-					}
-					endif;
+				endforeach;
+				endif;
 					//to delete: trns_details- delete the entry, inventory- delet the entry
-					if (isset($deleted) and !empty($deleted)):
-					foreach ($deleted as $d):
-						$this->Trns_details_model->delete($d['id']);
-						$this->Inventory_model->edit_transaction_delete_purchase($d['inventory_id']);
-					endforeach;
-					endif;
+				if (isset($deleted) and !empty($deleted)):
+				foreach ($deleted as $d):
+					$this->Trns_details_model->delete($d['id']);
+					$this->Inventory_model->edit_transaction_delete_purchase($d['inventory_id']);
+				endforeach;
+				endif;
 					//retained: In purchase retained will have entries which could not be deleted + which were not deleted. 'which could not be deleted' - in this category, change of quantity is allowed. We will just 
 					//update the quantity and clbal in inventory for each entry,
 					//update the entry in trns_details
-					if (isset($retained) and !empty($retained)):
-					foreach ($retained as $r):
-						$this->Inventory_model->update_purchase_quantity($r['inventory_id'], $r['quantity']);
-						$this->Trns_details_model->update_purchase_quantity($r['id'], $r['quantity']);
-					endforeach;
+				if (isset($retained) and !empty($retained)):
+				foreach ($retained as $r):
+					$this->Inventory_model->update_purchase_quantity($r['inventory_id'], $r['quantity']);
+					$this->Trns_details_model->update_purchase_quantity($r['id'], $r['quantity']);
+				endforeach;
+				endif;
+				//if bill is deleted
+					if($countretained+$counttoadd==0):
+						$this->Trns_summary_model->delete($this->session->trns_summary_id);
 					endif;
 				unset($_SESSION['details']);
 				unset($_SESSION['tran_type_name']);
@@ -642,11 +654,17 @@ public function purch_add_details(){
 				$this->load->view('templates/footer');	
 			else:
 				//bill is complete.
+				$countdeleted=$countretained=$counttoadd=0;
 				if (isset($this->session->deleted) and !empty($this->session->deleted)):
 					$deleted = $this->session->deleted;
 				endif;
 				if (isset($this->session->toadd) and !empty($this->session->toadd)):
 					$toadd = $this->session->toadd;
+					$counttoadd = count($toadd);
+				endif;
+				if (isset($this->session->retained) and !empty($this->session->retained)):
+					$retained = $this->session->retained;
+					$countretained=count($retained);
 				endif;
 				$tran_type_name = $this->session->tran_type_name;
 				$this->db->trans_start();
@@ -673,6 +691,10 @@ public function purch_add_details(){
 					//updating inventory
 						$this->Inventory_model->edit_transaction_delete_sales($tran_type_name, $d['inventory_id'], $d['quantity']);
 					}
+				endif;
+				//if bill is deleted
+				if($countretained+$counttoadd==0):
+					$this->Trns_summary_model->delete($this->session->trns_summary_id);
 				endif;
 				unset($_SESSION['details']);
 				unset($_SESSION['tran_type_name']);

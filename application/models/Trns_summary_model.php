@@ -51,7 +51,16 @@ class Trns_summary_model extends CI_Model{
 	else:
 		return false;
 	endif;
-}
+	}
+
+	public function delete($id){
+	//called by trns_details/edit_purchase_add, trns_details/edit_sales_add
+	$data=array('expenses'=>0, 'remark'=>'Cancelled');
+	$sql=$this->db->where('id',$id);
+	$sql=$this->db->update('trns_summary',$data);
+	
+	}
+
 
 	
 
