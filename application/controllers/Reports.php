@@ -222,7 +222,23 @@
 			$data['det']['gst32']=$this->Trns_details_model->gst32($data['frdate'], $data['todate']);
 			$data['det']['gstitc']=$this->Trns_details_model->gstitc($data['frdate'], $data['todate']);
 			$data['det']['gstnilinward']=$this->Trns_details_model->gstnilinward($data['frdate'], $data['todate']);
-				//$data['det']['outward']=$this->Trns_details_model->outward($data['frdate'], $data['todate']);
+			//get all sales series
+			$salesseries=$this->Series_model->get_all_sales_series();
+			foreach ($salesseries as $s):
+			$ser[]=$s['series'];
+			endforeach;
+			foreach ($ser as $series):
+				$data['det']['documents'][$series]['begin']=$this->Trns_details_model->get_minno_series($series,$data['frdate'], $data['todate'])['no'];
+				
+				$data['det']['documents'][$series]['end']=$this->Trns_details_model->get_maxno_series($series,$data['frdate'], $data['todate'])['no'];
+				
+				$data['det']['documents'][$series]['total']=$this->Trns_details_model->get_total_series($series,$data['frdate'], $data['todate'])['total'];
+				
+				$data['det']['documents'][$series]['cancelled']=$this->Trns_details_model->get_cancelled_series($series,$data['frdate'], $data['todate'])['cancelled'];
+			endforeach;
+			//$data['det']['outward']=$this->Trns_details_model->outward($data['frdate'], $data['todate']);
+			$data['series']=$ser;
+			
 			$this->load->view('reports/gst', $data);
 		endif;
 		

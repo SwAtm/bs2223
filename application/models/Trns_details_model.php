@@ -421,6 +421,42 @@ class Trns_details_model extends CI_Model{
 		group by trns_summary.id) as b
 		on a.id=b.trsid";
 		return $this->db->query($sql, array ($id))->result_array();	
-		
 		}	
+		
+		public function get_minno_series($series, $frdate, $todate){
+		//called by reports/gstreports	
+		$sql="select trns_summary.no FROM trns_summary where trns_summary.id = (SELECT MIN(id) from trns_summary WHERE trns_summary.series=? and  trns_summary.date>=? and trns_summary.date<=?)";
+		if($this->db->query($sql, array($series, $frdate, $todate))->row_array() and null!==($this->db->query($sql, array($series, $frdate, $todate))->row_array())):
+				return $this->db->query($sql, array($series, $frdate, $todate))->row_array();	
+		else:
+			return array('no'=>'No Entry');
+		endif;
+		}
+		
+		
+		public function get_maxno_series($series, $frdate, $todate){
+		//called by reports/gstreports	
+		$sql="select trns_summary.no FROM trns_summary where trns_summary.id = (SELECT MAX(id) from trns_summary WHERE trns_summary.series=? and  trns_summary.date>=? and trns_summary.date<=?)";
+		if($this->db->query($sql, array($series, $frdate, $todate))->row_array() and null!==($this->db->query($sql, array($series, $frdate, $todate))->row_array())):
+				return $this->db->query($sql, array($series, $frdate, $todate))->row_array();	
+		else:
+			return array('no'=>'No Entry');
+		endif;
+		}
+		
+		
+		
+		
+		public function get_total_series($series, $frdate, $todate){
+		//called by reports/gstreports	
+		$sql="SELECT COUNT(id) as total from trns_summary where trns_summary.series=? and trns_summary.date>=? and trns_summary.date<=?";
+		return $this->db->query($sql, array($series, $frdate, $todate))->row_array();	
+		
+	}
+	
+		public function get_cancelled_series($series, $frdate, $todate){
+		//called by reports/gstreports	
+		$sql="SELECT COUNT(id) as cancelled from trns_summary where trns_summary.series=? and trns_summary.date>=? and trns_summary.date<=? and trns_summary.remark=\"Cancelled\"";
+		return $this->db->query($sql, array($series, $frdate, $todate))->row_array();	
+	}
 }

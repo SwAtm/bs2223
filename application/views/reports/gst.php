@@ -416,6 +416,23 @@ $pdf->cell(35,5,number_format($ne['inter'],2,'.',','),1,0,'L');
 $pdf->cell(20,5,number_format($ne['intra'],2,'.',','),1,1,'L');
 endforeach;
 
+//Documents
+$pdf->ln(5);
+$pdf->cell(276,5,'Documents',0,1,'C');
+$pdf->cell(276,5,'Outward Invoices',0,1,'C');
+
+$pdf->cell(35,5,'From',1,0,'L');
+$pdf->cell(35,5,'To',1,0,'L');
+$pdf->cell(35,5,'Toal Issued',1,0,'L');
+$pdf->cell(35,5,'Cancelled',1,0,'L');
+$pdf->cell(35,5,'Net Issued',1,1,'L');
+foreach ($det['documents'] as $doc=>$v):
+$pdf->cell(35,5,$doc.'-'.$v['begin'],1,0,'L');
+$pdf->cell(35,5,$doc.'-'.$v['end'],1,0,'L');
+$pdf->cell(35,5,$v['total'],1,0,'L');
+$pdf->cell(35,5,$v['cancelled'],1,0,'L');
+$pdf->cell(35,5,$v['total']-$v['cancelled'],1,1,'L');
+endforeach;
 
 
 $pdf->Image(base_url(IMGPATH.'home.png'),145,200,5,'','',site_url('welcome/home'));
@@ -431,8 +448,9 @@ $pdf->output();
 
 echo $frdate."<br>".$todate."<br>";
 echo "<pre>";
-print_r($det['hsn']);
+print_r($det['documents']);
 echo "</pre>";
+print_r($series);
 echo "<a href = ".site_url('welcome/home').">Home</a>";
 
 ?>

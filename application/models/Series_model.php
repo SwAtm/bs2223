@@ -70,8 +70,15 @@ endif;
 	$sql=$this->db->where('series', $series);
 	$sql=$this->db->get();
 	return $sql->row_array();
+	}
 	
-	
+	public function get_all_sales_series(){
+	//called by reports/gstreports
+	$sql=$this->db->select('series');
+	$sql=$this->db->from('series');
+	$sql=$this->db->where('tran_type_name', 'Sales');
+	$sql=$this->db->get();
+	return $sql->result_array();
 	}
 
 }
