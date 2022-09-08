@@ -55,9 +55,7 @@ endif;
             
        </ul>
     </li>
-  <?php
-if($_SESSION['loc_name']=='Fort Ashrama'):
-?>  
+
     <li><a href = '#'>Stock Transfer</a>
         <ul class = "sub">
             <li><a href="<?php echo site_url('Trnf_summary/summary')?>">List Summary</a></li>
@@ -65,6 +63,9 @@ if($_SESSION['loc_name']=='Fort Ashrama'):
             <!--<li><a href="<?php echo site_url('Trnf_details/receive')?>">Receive Stock</a></li>-->
         </ul>
     </li>
+	 <?php
+	if($_SESSION['loc_name']=='Fort Ashrama'):
+	?>  
     <li><a href="<?php echo site_url('Po_summary/summary')?>">Purchase Order</a></li>
     <li><a href = '#'>Party Ledger</a>
         <ul class = "sub">

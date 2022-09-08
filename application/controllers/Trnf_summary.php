@@ -30,6 +30,8 @@ class Trnf_summary extends CI_Controller{
 			
 			$crud->set_table('trnf_summary')
 				->set_subject('Transfer')
+				->where('trnf_summary.from_id', $this->session->loc_id)
+				->or_where('trnf_summary.to_id', $this->session->loc_id)
 				->order_by('id','desc')
 				->columns('id','date','from_id','to_id')
 				->display_as('id','ID')
