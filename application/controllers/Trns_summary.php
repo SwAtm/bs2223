@@ -47,18 +47,19 @@ class Trns_summary extends CI_Controller{
 				->set_relation('party_id','party','{name}--{city}')
 				->callback_column('amount',array($this,'_callback_amount'))
 				->callback_column('expenses',array($this,'_callback_expenses'))
-				/*
-				second parameter can be blank in datatables theme.
+				
+				//second parameter can be blank in datatables theme.
 				->add_action('Edit Summary',base_url('application/pencil.jpeg'),'','',array($this, 'check_editable'))
 				->add_action('View Details',base_url('application/view_details.png'),'trns_summary/view_details')
 				->add_action('Edi Details',base_url('application/view_details.png'),'trns_details/check_editable')
 				->add_action('Print Bill', base_url('application/print.png'), 'reports/print_bill');
-				*/
+				
+				/*
 				->add_action('Edit Summary','','','',array($this, 'check_editable'))
 				->add_action('View Details','','trns_summary/view_details')
 				->add_action('Edi Details','','trns_details/check_editable1')
 				->add_action('Print Bill', '', 'reports/print_bill');
-				
+				*/
 				$series = $this->Series_model->get_all_series_by_location();
 				
 				$s3 = 'series_id = ';
