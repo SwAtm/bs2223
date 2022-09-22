@@ -29,7 +29,7 @@ class Trns_summary extends CI_Controller{
 			
 			$crud->set_table('trns_summary')
 				->set_subject('Transaction')
-				->set_theme('datatables')
+				//->set_theme('datatables')
 				->columns('id','series_id','no','date', 'party_id', 'expenses', 'amount','remark')
 				->display_as('series_id','Series')
 				->display_as('no','Trn Number')
@@ -90,6 +90,7 @@ class Trns_summary extends CI_Controller{
 	
 		public function _callback_amount($id, $row)
 		{
+		
 		$sql=$this->db->select('SUM(quantity*(rate-cash_disc)-((quantity*(rate-cash_disc)))*discount/100) AS amount',false);
 		$sql=$this->db->from ('trns_details');
 		//$sql=$this->db->join('item', 'item.id=details.item_id');
@@ -97,7 +98,8 @@ class Trns_summary extends CI_Controller{
 		//$sql=$this->db->group_by('details.summary_id');
 		$res=$this->db->get();
 		$amount=$res->row()->amount;
-		$amount=$amount+$row->expenses;
+		$amount+=(int)$row->expenses;
+		//return $amount;
 		return number_format($amount,2,'.','');
 		}
 		

@@ -77,7 +77,7 @@ foreach ($item as $key => $value) {
 <td><input type = number size = 15 name = quantity required value = 1></td>
 <td><input type = number size = 15 name = discount step = 0.01 placeholder = 0.00></td>
 <td><input type = number size = 15 name = cash_disc step = 0.01 placeholder = 0.00></td>
-<td><input type = text size = 4 maxlenght = "4" name = hsn required oninput="this.value=this.value.replace(/[^0-9]/g,'');"></td>
+<td><input type = text size = 4 maxlength = "8" minlength = "6" name = hsn required></td>
 <td><input type = number size = 15 name = gst_rate id = gstrate required></td>
 <td><input type = submit name = add value = Add></td></tr>
 

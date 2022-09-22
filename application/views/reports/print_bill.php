@@ -22,7 +22,7 @@ $pdf->Cell(190,5,'Ramakrishna Mission Ashrama - '.rtrim($location),0,1,'C');
 $pdf->SetFont('Arial','',12);
 $pdf->Cell(190,5,'Fort, Belgaum, Karnataka - 590016 :: Ph: 0831 2432789 / 2970320 / 321',0,1,'C');
 $pdf->SetFont('Arial','',12);
-$pdf->Cell(190,5,'email: belgaum@rkmm.org :: GSTIN: 29AAAAR1077P1Z',0,1,'C');
+$pdf->Cell(190,5,'email: belgaum@rkmm.org :: GSTIN: 29AAAAR1077P1ZZ',0,1,'C');
 $pdf->ln(2);
 $pdf->cell(190,0,'',1,1);
 $pdf->ln(5);
