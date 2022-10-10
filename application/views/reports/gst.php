@@ -273,7 +273,7 @@ endforeach;
 
 
 //Documents
-if ($pdf->getY()>175):
+if ($pdf->getY()>150):
 		//$pdf->cell(15,5,$pdf->getY(),1,1,'R');
 			$pdf->AddPage();
 endif;
