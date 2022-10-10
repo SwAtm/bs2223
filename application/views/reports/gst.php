@@ -273,6 +273,10 @@ endforeach;
 
 
 //Documents
+if ($pdf->getY()>175):
+		//$pdf->cell(15,5,$pdf->getY(),1,1,'R');
+			$pdf->AddPage();
+endif;
 $pdf->ln(5);
 $pdf->cell(276,5,'Documents',0,1,'C');
 $pdf->cell(276,5,'Outward Invoices',0,1,'C');
@@ -299,6 +303,10 @@ endforeach;
 //else:
 //$pdf->Image(base_url(IMGPATH.'home.png'),105,140,5,'','',site_url('welcome/home'));
 //endif;
+if ($pdf->getY()>175):
+		//$pdf->cell(15,5,$pdf->getY(),1,1,'R');
+			$pdf->AddPage();
+endif;
 $pdf->ln(5);
 $pdf->cell(276,5,'OUTWARD',0,1,'C');
 $pdf->cell(50,5,'Nature of Supplies',1,0,'L');
