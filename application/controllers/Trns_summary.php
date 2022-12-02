@@ -9,7 +9,7 @@ class Trns_summary extends CI_Controller{
 		$this->load->library('form_validation');
 		$this->load->library('table');
 		$this->load->library('grocery_CRUD');
-		//$this->output->enable_profiler(TRUE);
+		$this->output->enable_profiler(TRUE);
 		$this->load->library('user_agent');
 		$this->load->library('session');
 		$this->load->model('Series_model');
@@ -227,7 +227,115 @@ class Trns_summary extends CI_Controller{
 
 }
 
+			public function trns_search(){
+			//unsubmitted
+			if (!isset($_POST) || empty($_POST)):	
+				$data['party']=$this->Party_model->getall();
+				$this->load->view('templates/header');
+				$this->load->view('trns_summary/trns_search',$data);
+				$this->load->view('templates/footer');
+			//submitted blank
+			elseif ((!isset($_POST['trno']) or empty($_POST['trno'])) and (!isset($_POST['party']) or empty($_POST['party']))):
+				$this->load->view('templates/header');
+				$this->output->append_output("Nothing selected.<a href =".site_url('welcome/home'."> GO to Home</a>"));
+			//submitted with party
+			elseif (isset($_POST['party']) and !empty($_POST['party'])):
+				$partyid=$_POST['party'];
+				$crud = new grocery_CRUD();
+				$crud->set_table('trns_summary')
+				->set_subject('Transaction')
+				//->set_theme('datatables')
+				->columns('id','series_id','no','date', 'party_id', 'expenses', 'amount','remark')
+				->display_as('series_id','Series')
+				->display_as('no','Trn Number')
+				->display_as('date','Date')
+				->display_as('party_id','Party')
+				->display_as('expenses','Expenses')
+				->display_as('remark','Remark')
+				->display_as('amount', 'Amount')
+				->order_by('id','desc')
+				->unset_add()
+				->unset_delete()
+				->unset_edit()
+				->unset_print()
+				->set_relation('series_id','series','{payment_mode_name}-{tran_type_name}')
+				->set_relation('party_id','party','{name}--{city}')
+				->callback_column('amount',array($this,'_callback_amount'))
+				->callback_column('expenses',array($this,'_callback_expenses'))
+				->add_action('Edit Summary',base_url('application/pencil.jpeg'),'','',array($this, 'check_editable'))
+				->add_action('View Details',base_url('application/view_details.png'),'trns_summary/view_details')
+				->add_action('Edi Details',base_url('application/view_details.png'),'trns_details/check_editable')
+				->add_action('Print Bill', base_url('application/print.png'), 'reports/print_bill');
+				$series = $this->Series_model->get_all_series_by_location();
+				$s3 = 'series_id = ';
+				$i = 0;
+				while ($i < count($series)) {
+				 	# code...
+				  if ($i+1 == count($series)):
+					$s3 .= $series[$i]['id'].' and party_id='.$partyid;
+				else:
+					$s3 .= $series[$i]['id'].' and party_id='.$partyid.' or series_id = ';
+				endif;
+				 $i++;
+			}
+				
+				$crud->where($s3);
+				
+				$output = $crud->render();
+				$output->extra='';
+				$this->_example_output($output);                	
+			//submitted with trno
+			elseif (isset($_POST['trno']) and !empty($_POST['trno'])):
+				$trno=$_POST['trno'];
+				$crud = new grocery_CRUD();
+				$crud->set_table('trns_summary')
+				->set_subject('Transaction')
+					//->set_theme('datatables')
+				->columns('id','series_id','no','date', 'party_id', 'expenses', 'amount','remark')
+				->display_as('series_id','Series')
+				->display_as('no','Trn Number')
+				->display_as('date','Date')
+				->display_as('party_id','Party')
+				->display_as('expenses','Expenses')
+				->display_as('remark','Remark')
+				->display_as('amount', 'Amount')
+				->order_by('id','desc')
+				->unset_add()
+				->unset_delete()
+				->unset_edit()
+				->unset_print()
+				->set_relation('series_id','series','{payment_mode_name}-{tran_type_name}')
+				->set_relation('party_id','party','{name}--{city}')
+				->callback_column('amount',array($this,'_callback_amount'))
+				->callback_column('expenses',array($this,'_callback_expenses'))
+				->add_action('Edit Summary',base_url('application/pencil.jpeg'),'','',array($this, 'check_editable'))
+				->add_action('View Details',base_url('application/view_details.png'),'trns_summary/view_details')
+				->add_action('Edi Details',base_url('application/view_details.png'),'trns_details/check_editable')
+				->add_action('Print Bill', base_url('application/print.png'), 'reports/print_bill');
+				$series = $this->Series_model->get_all_series_by_location();
+				
+				$s3 = 'series_id = ';
+
+				$i = 0;
+				while ($i < count($series)) {
+				 	# code...
+
+				 if ($i+1 == count($series)):
+					$s3 .= $series[$i]['id'].' and no = '.$trno;
+				else:
+					$s3 .= $series[$i]['id'].' and no = '.$trno.' or series_id = ';
+				endif;
+				 $i++;
+			}
+				
+				$crud->where($s3);
+				$output = $crud->render();
+				$output->extra='';
+				$this->_example_output($output);                	
+			endif;
 			
+			
+			}
 
 }
 ?>

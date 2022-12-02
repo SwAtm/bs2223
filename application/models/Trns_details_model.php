@@ -66,7 +66,7 @@ class Trns_details_model extends CI_Model{
 
 		public function get_trans($id, $myprice){
 		//called by item/det_stck
-		$sql = $this->db->select('series.payment_mode_name, series.tran_type_name, trns_summary.series, trns_summary.date, trns_details.trns_summary_id, trns_details.item_id, trns_details.rate, trns_details.quantity, item.title ');
+		$sql = $this->db->select('series.payment_mode_name, series.tran_type_name, trns_summary.series, trns_summary.date, trns_summary.no, trns_details.trns_summary_id, trns_details.item_id, trns_details.rate, trns_details.quantity, item.title ');
 		$sql = $this->db->from('trns_details');
 		$sql = $this->db->join('trns_summary', 'trns_details.trns_summary_id=trns_summary.id');
 		$sql = $this->db->join('series', 'trns_summary.series = series.series');

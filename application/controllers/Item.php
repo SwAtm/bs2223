@@ -230,7 +230,7 @@ class Item extends CI_Controller{
 			if ($row['tran_type_name']=='Purchase Return'||$row['tran_type_name']=='Sales'):
 				$row['quantity']=0-$row['quantity'];
 			endif;
-		$show_stck[]=array('date'=>$row['date'], 'document'=>$row['payment_mode_name']." ".$row['tran_type_name']." ".$row['series']." ".$row['trns_summary_id'], 'qty'=>$row['quantity'], 'balance'=>0);
+		$show_stck[]=array('date'=>$row['date'], 'document'=>$row['payment_mode_name']." ".$row['tran_type_name']." ".$row['series']." ".$row['no'], 'qty'=>$row['quantity'], 'balance'=>0);
 		endforeach;
 		
 		foreach ($trnf_out as $row):
