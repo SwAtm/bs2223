@@ -16,7 +16,9 @@ class Trns_details extends CI_Controller{
 		$this->load->model('Trns_details_model');
 		$this->load->model('Trnf_details_model');
 		$this->load->model('Profo_details_model');
+		$this->load->model('Location_model');
 		$this->load->library('session');
+		$this->load->helper('pdf_helper');
 		$this->output->enable_profiler(TRUE);
 	}
 
@@ -728,6 +730,39 @@ public function purch_add_details(){
 		//print_r($searchval);
 		
 		}		
+		
+		
+		public function discountreport(){
+		//set validation rules
+		$this->form_validation->set_rules('frdate', 'From Date', 'required');
+		$this->form_validation->set_rules('todate', 'To Date', 'required');
+		//first pass
+		if ($this->form_validation->run()==false):
+			$this->load->view('templates/header');
+			$this->load->view('trns_details/discrep_get_dates');
+			$this->load->view('templates/footer');
+		//submitted, validated
+		else:
+			$frdate=date('Y-m-d',strtotime($this->input->post('frdate')));
+			$todate=date('Y-m-d',strtotime($this->input->post('todate')));
+			$locations=$this->Location_model->getall();
+			foreach ($locations as $locn):
+			$loc=$locn['name'];
+			$data['discountreport'][$loc]=$this->Trns_details_model->discountreport($loc, $frdate, $todate);
+				$data['profit'][$loc]=0;
+				foreach ($data['discountreport'][$loc] as $k=>$v):
+					$data['discountreport'][$loc][$k]['profit']=$v['netsales']-$v['cost'];
+					$data['profit'][$loc]+=$data['discountreport'][$loc][$k]['profit'];
+				endforeach;
+			endforeach;
+			$data['frdate']=$frdate;
+			$data['todate']=$todate;
+			$this->load->view('templates/header');
+			$this->load->view('trns_details/discountreport',$data);
+			$this->load->view('templates/footer');
+		endif;	
+		
+		}
 
 }
 ?>

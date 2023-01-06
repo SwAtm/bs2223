@@ -6,7 +6,7 @@ class Location_model extends CI_Model{
 	}
 
 	public function getall(){
-	//called by Welcome/index
+	//called by Welcome/index, trns_details/discountreport
 	$sql=$this->db->select('*');
 	$sql=$this->db->from('locations');
 	$sql=$this->db->get();
