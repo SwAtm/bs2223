@@ -1,10 +1,14 @@
 <?php
 /*
+echo "<pre>";
 echo $frdate;
 echo $todate;
 print_r($discountreport);
 print_r($profit);
+echo "</pre>";
 */
+
+
 tfpdf();
 $i=1;
 $pdf = new tFPDF('P', 'mm', array(210,296));
@@ -30,26 +34,36 @@ $pdf->ln(2);
 $pdf->SetFont('Arial','',10);
 $pdf->cell(180,0,'',1,1);
 $pdf->ln(5);
-$pdf->Cell(25,5,'Bill No',1,0,'C');
-$pdf->Cell(20,5,'Date',1,0,'C');
+//$pdf->Cell(25,5,'Bill No',1,0,'C');
+//$pdf->Cell(20,5,'Date',1,0,'C');
 $pdf->Cell(50,5,'Item',1,0,'C');
 $pdf->Cell(20,5,'Rate',1,0,'C');
 $pdf->Cell(20,5,'Qty',1,0,'C');
 //$pdf->Cell(15,5,'Disc',1,0,'C');
 //$pdf->Cell(15,5,'Cash_D',1,0,'C');
 $pdf->Cell(20,5,'Total',1,0,'C');
-$pdf->Cell(20,5,'Discount',1,1,'C');
+$pdf->Cell(20,5,'Discount',1,0,'C');
+$pdf->Cell(20,5,'Discount %',1,0,'C');
+$pdf->Cell(25,5,'',1,1,'C');
 
 	foreach ($v as $key):
-	$pdf->Cell(25,5,$key['series'].' - '.$key['no'],1,0,'C');
-	$pdf->Cell(20,5,date('d-m-Y', strtotime($key['date'])),1,0,'C');
+	//$pdf->Cell(25,5,$key['series'].' - '.$key['no'],1,0,'C');
+	//$pdf->Cell(20,5,date('d-m-Y', strtotime($key['date'])),1,0,'C');
 	$pdf->Cell(50,5,substr($key['title'],0,20),1,0,'C');
 	$pdf->Cell(20,5,$key['rate'],1,0,'C');
 	$pdf->Cell(20,5,$key['quantity'],1,0,'C');
 	//$pdf->Cell(15,5,$key['discount'],1,0,'C');
 	//$pdf->Cell(15,5,$key['cash_disc'],1,0,'C');
 	$pdf->Cell(20,5,number_format($key['netsales'],2,'.',','),1,0,'C');
-	$pdf->Cell(20,5,number_format($key['profit'],2,'.',','),1,1,'C');
+	$pdf->Cell(20,5,number_format($key['profit'],2,'.',','),1,0,'C');
+	if (number_format($key['profitpt'],2,'.',',')>30.00):
+		$pdf->SetFont('Arial','B',10);
+	$pdf->Cell(20,5,number_format($key['profitpt'],2,'.',','),1,0,'C');
+		$pdf->SetFont('Arial','',10);
+	else:
+		$pdf->Cell(20,5,number_format($key['profitpt'],2,'.',','),1,0,'C');
+	endif;
+	$pdf->Cell(25,5,'',1,1,'C');
 	$tnetsales+=$key['netsales'];
 	$tprofit+=$key['profit'];
 		if ($pdf->GetY()>=270):
@@ -61,20 +75,24 @@ $pdf->Cell(20,5,'Discount',1,1,'C');
 			$pdf->ln(2);
 			$pdf->cell(190,0,'',1,1);
 			$pdf->ln(5);
-			$pdf->Cell(25,5,'Bill No',1,0,'C');
-			$pdf->Cell(20,5,'Date',1,0,'C');
+			//$pdf->Cell(25,5,'Bill No',1,0,'C');
+			//$pdf->Cell(20,5,'Date',1,0,'C');
 			$pdf->Cell(50,5,'Item',1,0,'C');
 			$pdf->Cell(20,5,'Rate',1,0,'C');
 			$pdf->Cell(20,5,'Qty',1,0,'C');
 			//$pdf->Cell(15,5,'Disc',1,0,'C');
 			//$pdf->Cell(15,5,'Cash_D',1,0,'C');
 			$pdf->Cell(20,5,'Total',1,0,'C');
-			$pdf->Cell(20,5,'Discount',1,1,'C');
+			$pdf->Cell(20,5,'Discount',1,0,'C');
+			$pdf->Cell(20,5,'Discount %',1,0,'C');
+			$pdf->Cell(25,5,'',1,1,'C');
 		endif;
 	endforeach;
-$pdf->cell(135, 5, 'Total', 1,0,'C');
+$pdf->cell(90, 5, 'Total', 1,0,'C');
 $pdf->cell(20, 5, number_format($tnetsales,2,'.',','), 1,0,'C');
-$pdf->cell(20, 5, number_format($tprofit,2,'.',','), 1,1,'C');
+$pdf->cell(20, 5, number_format($tprofit,2,'.',','), 1,0,'C');
+$pdf->Cell(20,5,'',1,0,'C');
+$pdf->Cell(25,5,'',1,1,'C');
 $pdf->SetY(266);
 $pdf->Cell(190,5,'Page '.$i,0,1,'C');
 $i++;
@@ -103,4 +121,5 @@ endforeach;
 $pdf->ln(5);
 $pdf->Cell(135,5,'Home',0, 0, 'C',0, site_url('welcome/home'));
 $pdf->output();
+
 ?>

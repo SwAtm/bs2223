@@ -750,8 +750,15 @@ public function purch_add_details(){
 			$loc=$locn['name'];
 			$data['discountreport'][$loc]=$this->Trns_details_model->discountreport($loc, $frdate, $todate);
 				$data['profit'][$loc]=0;
+				//80% of actual profit or 30% of sales, whichever is lower
 				foreach ($data['discountreport'][$loc] as $k=>$v):
-					$data['discountreport'][$loc][$k]['profit']=$v['netsales']-$v['cost'];
+					$data['discountreport'][$loc][$k]['profitpt']=(($v['netsales']-$v['cost'])*0.8)*100/$v['netsales'];
+					if ($data['discountreport'][$loc][$k]['profitpt']>30):
+						$data['discountreport'][$loc][$k]['profitpt']=30;
+						$data['discountreport'][$loc][$k]['profit']=$v['netsales']*.3;
+					else:
+						$data['discountreport'][$loc][$k]['profit']=($v['netsales']-$v['cost'])*0.8;
+					endif;
 					$data['profit'][$loc]+=$data['discountreport'][$loc][$k]['profit'];
 				endforeach;
 			endforeach;
