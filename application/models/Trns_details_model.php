@@ -461,7 +461,7 @@ class Trns_details_model extends CI_Model{
 	}
 	
 		public function discountreport($loc, $frdate, $todate){
-		$sql="select ts.series, ts.no, ts.date, item.title, td.rate, td.quantity, ((td.rate-td.cash_disc)*td.quantity*(100-td.discount)/100)*(100-gst_rate)/100 as netsales, inventory.cost*td.quantity as cost from
+		$sql="select item.title, td.rate, sum(td.quantity) as quantity, sum(((td.rate-td.cash_disc)*td.quantity*(100-td.discount)/100)/(100+gst_rate)*100) as netsales, sum(inventory.cost*td.quantity) as cost from
 		trns_details as td join
 		trns_summary as ts on td.trns_summary_id=ts.id join
 		item on td.item_id=item.id join 
@@ -469,7 +469,8 @@ class Trns_details_model extends CI_Model{
 		series on series.series=ts.series
 		where series.tran_type_name='Sales'
 		and series.location_name=?
-		and ts.date>=? and ts.date<=?";
+		and ts.date>=? and ts.date<=?
+		group by inventory.id";
 		return $this->db->query($sql, array($loc, $frdate, $todate))->result_array();	
 		
 		
