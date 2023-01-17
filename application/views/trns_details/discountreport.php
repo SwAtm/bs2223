@@ -56,13 +56,7 @@ $pdf->Cell(25,5,'',1,1,'C');
 	//$pdf->Cell(15,5,$key['cash_disc'],1,0,'C');
 	$pdf->Cell(20,5,number_format($key['netsales'],2,'.',','),1,0,'C');
 	$pdf->Cell(20,5,number_format($key['profit'],2,'.',','),1,0,'C');
-	if (number_format($key['profitpt'],2,'.',',')>30.00):
-		$pdf->SetFont('Arial','B',10);
 	$pdf->Cell(20,5,number_format($key['profitpt'],2,'.',','),1,0,'C');
-		$pdf->SetFont('Arial','',10);
-	else:
-		$pdf->Cell(20,5,number_format($key['profitpt'],2,'.',','),1,0,'C');
-	endif;
 	$pdf->Cell(25,5,'',1,1,'C');
 	$tnetsales+=$key['netsales'];
 	$tprofit+=$key['profit'];
@@ -118,8 +112,9 @@ $pdf->ln(5);
 foreach ($profit as $p):
 $pdf->Cell(60,5,$p,0,0);
 endforeach;
-$pdf->ln(5);
-$pdf->Cell(135,5,'Home',0, 0, 'C',0, site_url('welcome/home'));
+$pdf->ln(10);
+$pdf->Image(base_url(IMGPATH.'home.png'),105,null,5,'','',site_url('welcome/home'));
+//$pdf->Cell(135,5,'Home',0, 0, 'C',0, site_url('welcome/home'));
 $pdf->output();
 
 ?>
