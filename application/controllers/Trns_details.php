@@ -188,7 +188,7 @@ public function purch_add_details(){
 		public function sales_add_details(){
 		//unsubmitted
 		if (time()<=strtotime('01-04-2022') or time()>=strtotime('31-03-2023')):	
-		die("Today's date is out of range"."<a href =".site_url('welcome/home').">". go home</a>");
+		die("Today's date is out of range"."<a href =".site_url('welcome/home').">go home</a>");
 		endif;
 		if (!isset($_POST)||empty($_POST)):			
 			
